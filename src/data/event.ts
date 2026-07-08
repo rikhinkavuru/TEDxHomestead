@@ -7,9 +7,11 @@ export const EVENT = {
   shortName: 'TEDxHomestead',
   theme: '', // fill in: event theme, e.g. "Uncharted"
   date: 'Friday, October 2, 2026',
+  dateShort: 'friday october 2 2026',
   dateISO: '2026-10-02',
   time: '5:00 PM – 8:00 PM',
-  doorsOpen: '4:30 PM',
+  timeShort: '5pm — 8pm',
+  doorsOpen: '4:30PM',
   capacity: 100,
   venue: {
     name: 'Homestead High School',

@@ -2,25 +2,25 @@ import { EVENT } from '../data/event'
 
 export default function Footer() {
   return (
-    <footer className="border-t border-ink/10 bg-white">
-      <div className="mx-auto flex max-w-6xl flex-col gap-6 px-5 py-12 sm:flex-row sm:items-center sm:justify-between">
+    <footer className="border-t-2 border-ink-900">
+      <div className="mx-auto flex max-w-[1240px] flex-wrap items-center justify-between gap-4 px-[6%] py-10">
         <div>
-          <p className="font-black tracking-tight">
-            <span className="text-ted">TEDx</span>Homestead
+          <p className="font-display text-[17px] font-bold lowercase tracking-[-0.02em]">
+            tedxhomestead
           </p>
-          <p className="mt-1 max-w-md text-xs leading-relaxed text-ink/50">
+          <p className="mt-1 max-w-[52ch] text-[11px] leading-[1.4] text-ink-500">
             This independent TEDx event is operated under license from TED.
+            {EVENT.contactEmail && (
+              <>
+                {' '}
+                <a className="sys-link" href={`mailto:${EVENT.contactEmail}`}>
+                  {EVENT.contactEmail}
+                </a>
+              </>
+            )}
           </p>
         </div>
-        <div className="text-sm text-ink/60">
-          <p>{EVENT.venue.name}</p>
-          <p>{EVENT.venue.address}</p>
-          {EVENT.contactEmail && (
-            <a href={`mailto:${EVENT.contactEmail}`} className="text-ted hover:underline">
-              {EVENT.contactEmail}
-            </a>
-          )}
-        </div>
+        <span className="label">{EVENT.venue.name}</span>
       </div>
     </footer>
   )
