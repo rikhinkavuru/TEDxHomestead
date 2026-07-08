@@ -1,0 +1,28 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-ted: #eb0028;
+  --color-ted-dark: #c40021;
+  --color-ink: #111111;
+  --color-paper: #f7f5f2;
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-white text-ink font-sans antialiased;
+  font-optical-sizing: auto;
+}
+
+::selection {
+  background: var(--color-ted);
+  color: white;
+}
+
+/* Big display headlines get tighter tracking, like editorial type */
+.display {
+  letter-spacing: -0.035em;
+}
