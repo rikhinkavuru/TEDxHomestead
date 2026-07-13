@@ -46,7 +46,6 @@ export function HeroBackground() {
         ))}
       </div>
       <div className="smhero-scrim" />
-      <div className="smhero-grain" />
     </div>
   )
 }
