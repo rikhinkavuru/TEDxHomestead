@@ -107,18 +107,38 @@ async function saveTicket(r: Reservation) {
   ctx.fillText('A D M I T   O N E', 0, 0)
   ctx.restore()
 
-  canvas.toBlob((blob) => {
-    if (!blob) return
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement('a')
-    const safeName = r.name.replace(/[^a-zA-Z0-9]/g, '') || 'Guest'
-    a.href = url
-    a.download = `${safeName}TEDxTicket.png`
-    document.body.appendChild(a)
-    a.click()
-    a.remove()
-    URL.revokeObjectURL(url)
-  }, 'image/png')
+  const blob = await new Promise<Blob | null>((res) => canvas.toBlob(res, 'image/png'))
+  if (!blob) return
+
+  const safeName = r.name.replace(/[^a-zA-Z0-9]/g, '') || 'Guest'
+  const filename = `${safeName}TEDxTicket.png`
+  const file = new File([blob], filename, { type: 'image/png' })
+
+  // On phones/tablets, open the native share sheet so the user can "Save Image"
+  // straight to their camera roll (people don't download files on mobile).
+  // Desktop always downloads.
+  const isTouch =
+    (navigator.maxTouchPoints ?? 0) > 0 || window.matchMedia('(pointer: coarse)').matches
+  if (isTouch && typeof navigator.canShare === 'function' && navigator.canShare({ files: [file] })) {
+    try {
+      await navigator.share({ files: [file], title: 'My TEDxHomestead ticket' })
+      return
+    } catch (err) {
+      // user cancelled the share sheet — don't fall back to a download
+      if (err instanceof Error && err.name === 'AbortError') return
+      // otherwise fall through to the download path below
+    }
+  }
+
+  // Desktop (or share unsupported): download the PNG.
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = filename
+  document.body.appendChild(a)
+  a.click()
+  a.remove()
+  URL.revokeObjectURL(url)
 }
 
 /** Full-screen ticket reveal — dims the page, floats a keepsake ticket. */
