@@ -325,7 +325,7 @@ h1, h2, h3, h4, h5, h6 { font-weight: 600; line-height: 1.2; color: var(--text-p
 }
 .rot {
   display: inline-block; position: relative; overflow: hidden;
-  height: 1.35em; min-width: 5.6em; vertical-align: bottom;
+  height: 1.35em; min-width: 5.6em; margin-left: 0.16em; vertical-align: bottom;
 }
 .rot-w {
   position: absolute; left: 0; top: 0; white-space: nowrap;
@@ -699,6 +699,22 @@ h1, h2, h3, h4, h5, h6 { font-weight: 600; line-height: 1.2; color: var(--text-p
   margin-bottom: 11px; text-align: left; text-decoration: none;
 }
 .smfooter-col button:hover, .smfooter-col a:hover { text-decoration: underline; }
+.smfooter-support { margin-top: 22px; color: rgba(255, 255, 255, 0.72); font-size: 0.95rem; line-height: 1.6; }
+
+/* email + copy button (red by default; white inside the red footer) */
+.copy-email {
+  display: inline-flex; align-items: center; gap: 6px; vertical-align: baseline;
+  background: none; border: none; padding: 0; cursor: pointer;
+  color: var(--red); font: inherit;
+}
+.copy-email-addr { font-weight: 600; }
+.copy-email svg { flex: none; }
+.copy-email-done { font-weight: 500; opacity: 0.85; }
+.smfooter .copy-email { color: #fff; }
+.smfooter .copy-email .copy-email-addr {
+  text-decoration: underline; text-decoration-color: rgba(255, 255, 255, 0.4); text-underline-offset: 2px;
+}
+.smfooter .copy-email:hover .copy-email-addr { text-decoration-color: #fff; }
 .smfooter-bar {
   position: relative; z-index: 2;
   max-width: 1280px; margin: 0 auto;

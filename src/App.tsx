@@ -5,7 +5,6 @@ import { Hero } from './components/Hero'
 import { About } from './components/About'
 import { Speakers } from './components/Speakers'
 import { Tickets } from './components/Tickets'
-import { Faq } from './components/Faq'
 import { Footer } from './components/Footer'
 
 export default function App() {
@@ -22,7 +21,6 @@ export default function App() {
         <About />
         <Speakers />
         <Tickets />
-        <Faq />
       </main>
       <Footer onNavigate={scrollToSection} />
     </>

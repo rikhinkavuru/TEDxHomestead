@@ -1,10 +1,10 @@
 import { EVENT } from '../data/event'
+import { CopyEmail } from './chrome'
 
 const LINKS: Array<{ label: string; id: string }> = [
   { label: 'About', id: 'event' },
   { label: 'Speakers', id: 'speakers' },
   { label: 'Tickets', id: 'tickets' },
-  { label: 'FAQ', id: 'faq' },
 ]
 
 export function Footer({ onNavigate }: { onNavigate: (id: string) => void }) {
@@ -33,10 +33,9 @@ export function Footer({ onNavigate }: { onNavigate: (id: string) => void }) {
             4310 Homestead Rd, Fort Wayne, IN
           </a>
           {EVENT.contactEmail && (
-            <>
-              <div className="h" style={{ marginTop: 22 }}>Contact</div>
-              <a href={`mailto:${EVENT.contactEmail}`}>{EVENT.contactEmail}</a>
-            </>
+            <p className="smfooter-support">
+              For support, contact <CopyEmail email={EVENT.contactEmail} />
+            </p>
           )}
           {EVENT.socials.instagram && (
             <a

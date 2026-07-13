@@ -5,7 +5,6 @@ const LINKS: Array<{ label: string; id: string }> = [
   { label: 'About', id: 'event' },
   { label: 'Speakers', id: 'speakers' },
   { label: 'Tickets', id: 'tickets' },
-  { label: 'FAQ', id: 'faq' },
 ]
 
 export function Nav({ onNavigate }: { onNavigate: (id: string) => void }) {
