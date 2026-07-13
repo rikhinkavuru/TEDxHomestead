@@ -1,38 +1,72 @@
-import Reveal from './Reveal'
+import { Section, Reveal, TedxLogo } from './chrome'
+import { EVENT } from '../data/event'
 
-export default function About() {
+/** Split the theme name so the accent portion renders in red. */
+function ThemeName() {
+  const { name, accent } = EVENT.theme
+  if (accent && name.includes(accent)) {
+    const [before] = name.split(accent)
+    return (
+      <>
+        {before}
+        <span className="g">{accent}</span>
+      </>
+    )
+  }
+  return <>{name}</>
+}
+
+export function About() {
   return (
-    <section id="about" className="border-t border-ink-900">
-      <div className="mx-auto max-w-[1240px] px-[6%] py-24">
-        <Reveal>
-          <p className="eyebrow mb-4">
-            <span className="n">—</span> what is tedx
-          </p>
-          <h2 className="display mb-6">
-            ideas worth
-            <br />
-            spreading, locally
-          </h2>
-        </Reveal>
-
-        <div className="grid gap-6 md:grid-cols-2">
+    <Section id="event">
+      <div className="smabout">
+        {/* left column — laid straight on the background */}
+        <div className="smabout-col">
           <Reveal>
-            <p className="max-w-[62ch] text-[18px] leading-[1.45] text-ink-700">
-              In the spirit of discovering and spreading ideas, TED has created a program called
-              TEDx. TEDx is a program of local, self-organized events that bring people together to
-              share a TED-like experience. Our event is called TEDxHomesteadHighSchool, where{' '}
-              <b className="text-ink-900">x = independently organized TED event</b>.
+            <h2 className="smabout-h">What is TEDx?</h2>
+            <p className="smabout-p">
+              TEDx events are locally organized gatherings where live talks and performances combine
+              to spark deep discussion and connection. While inspired by the spirit of TED, TEDx
+              events are planned and coordinated independently by communities around the world.
+            </p>
+            <p className="smabout-p smabout-p--muted">
+              This independent TEDx event is operated under license from TED.
             </p>
           </Reveal>
-          <Reveal delay={0.06}>
-            <p className="max-w-[62ch] text-[18px] leading-[1.45] text-ink-700">
-              Six live talks, one evening, one hundred seats. The TED Conference provides general
-              guidance for the TEDx program, but individual TEDx events, including ours, are
-              self-organized.
-            </p>
+
+          <Reveal delay={0.08}>
+            <div className="smabout-theme">
+              <span className="smabout-label">Theme</span>
+              <h3 className="smabout-themetitle"><ThemeName /></h3>
+              <p className="smabout-p">{EVENT.theme.blurb}</p>
+            </div>
           </Reveal>
         </div>
+
+        {/* right column — single event card, logo on top, full height */}
+        <Reveal delay={0.05} className="smabout-cardwrap">
+          <div className="smabout-card">
+            <div className="smabout-card-logo">
+              <TedxLogo className="smabout-card-logoimg" />
+            </div>
+            <div className="smabout-card-body">
+              <span className="smabout-label">Event</span>
+              <p className="smabout-when">{EVENT.date}, {EVENT.time}</p>
+              <p className="smabout-where">
+                {EVENT.venue.name} · Fort Wayne, Indiana
+                <br />
+                <span className="smabout-addr">4310 Homestead Rd, Fort Wayne, IN 46814</span>
+              </p>
+              <a className="smabout-dir" href={EVENT.venue.mapsUrl} target="_blank" rel="noreferrer">
+                Get directions →
+              </a>
+              <hr className="smabout-rule" />
+              <span className="smabout-label">Format</span>
+              <p className="smabout-format">{EVENT.format}</p>
+            </div>
+          </div>
+        </Reveal>
       </div>
-    </section>
+    </Section>
   )
 }

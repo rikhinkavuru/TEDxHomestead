@@ -1,35 +1,38 @@
-const LINKS = [
-  { href: '#about', label: 'about' },
-  { href: '#speakers', label: 'speakers' },
-  { href: '#venue', label: 'venue' },
+import { useEffect, useState } from 'react'
+import { ArrowButton } from './chrome'
+
+const LINKS: Array<{ label: string; id: string }> = [
+  { label: 'About', id: 'event' },
+  { label: 'Speakers', id: 'speakers' },
+  { label: 'Tickets', id: 'tickets' },
+  { label: 'FAQ', id: 'faq' },
 ]
 
-export default function Nav() {
+export function Nav({ onNavigate }: { onNavigate: (id: string) => void }) {
+  const [scrolled, setScrolled] = useState(false)
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 12)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
   return (
-    <header className="sticky top-0 z-50 border-b border-ink-900 bg-bone-100">
-      <nav className="mx-auto flex h-14 max-w-[1240px] items-center justify-between px-[6%]">
-        <a
-          href="#top"
-          className="font-display text-[17px] font-bold lowercase tracking-[-0.02em] text-ink-900"
-        >
-          tedxhomestead
-        </a>
-
-        <div className="flex items-center gap-6">
+    <header className={`smnav ${scrolled ? 'scrolled' : ''}`}>
+      <div className="smnav-inner">
+        <button className="smnav-logo" onClick={() => onNavigate('top')}>
+          TED<span className="x">x</span>Homestead
+        </button>
+        <nav className="smnav-links" aria-label="Primary">
           {LINKS.map((l) => (
-            <a
-              key={l.href}
-              href={l.href}
-              className="label hidden text-ink-500 transition-colors duration-[120ms] hover:text-ink-900 sm:block"
-            >
+            <button key={l.id} onClick={() => onNavigate(l.id)}>
               {l.label}
-            </a>
+            </button>
           ))}
-          <a href="#tickets" className="btn btn--primary inline-block no-underline">
-            get tickets
-          </a>
+        </nav>
+        <div className="smnav-cta">
+          <ArrowButton onClick={() => onNavigate('tickets')}>Get Tickets</ArrowButton>
         </div>
-      </nav>
+      </div>
     </header>
   )
 }

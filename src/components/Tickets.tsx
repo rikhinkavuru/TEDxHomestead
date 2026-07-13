@@ -1,73 +1,80 @@
 import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import Reveal from './Reveal'
+import { Section, Reveal, ArrowButton } from './chrome'
 import { EVENT } from '../data/event'
-import {
-  getMyReservation,
-  getRemaining,
-  reserveTicket,
-  type Reservation,
-} from '../lib/tickets'
+import { getMyReservation, getRemaining, reserveTicket, type Reservation } from '../lib/tickets'
 
 const ERROR_MESSAGES: Record<string, string> = {
-  sold_out: 'all 100 seats are reserved. email us for the waitlist.',
-  duplicate_email: 'a ticket is already held under this email.',
-  already_reserved: 'this device already holds a ticket.',
-  invalid: 'enter your name and a valid email.',
+  sold_out: 'All 100 seats are reserved. Email us for the waitlist.',
+  duplicate_email: 'A ticket is already held under this email.',
+  already_reserved: 'This device already holds a ticket.',
+  invalid: 'Enter your name and a valid email.',
+  error: 'Something went wrong reserving your seat. Please try again.',
 }
 
-function TicketStub({ reservation }: { reservation: Reservation }) {
+/** Full-screen ticket reveal — dims the page, floats a keepsake ticket. */
+function TicketOverlay({ reservation, onClose }: { reservation: Reservation; onClose: () => void }) {
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose()
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [onClose])
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.2, ease: [0.2, 0, 0, 1] }}
-      className="border border-ink-900 bg-bone-50"
+      className="tkt-modal"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.28 }}
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Your ticket"
     >
-      <div className="flex justify-between bg-red-500 px-4 py-2.5">
-        <span className="label text-bone-50">admit one</span>
-        <span className="label text-bone-50">free</span>
-      </div>
-      <div className="px-4 py-4">
-        <p className="text-[11px] text-ink-500">Ticket code</p>
-        <p className="font-display text-[40px] font-black leading-none tracking-[-0.02em]">
-          {reservation.code}
-        </p>
-      </div>
-      <div className="grid grid-cols-1 border-t border-ink-900 sm:grid-cols-[1fr_1.6fr_1.4fr]">
-        <div className="px-4 py-2 sm:border-r sm:border-ink-900">
-          <p className="text-[13px] font-bold leading-normal">{reservation.name}</p>
+      <button className="tkt-close" onClick={onClose}>← Back to event</button>
+
+      <motion.div
+        className="tkt"
+        onClick={(e) => e.stopPropagation()}
+        initial={{ opacity: 0, y: 30, scale: 0.92 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={{ opacity: 0, y: 20, scale: 0.95 }}
+        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1], delay: 0.05 }}
+      >
+        <div className="tkt-main">
+          <div className="tkt-kicker">TEDxHomestead presents</div>
+          <div className="tkt-name">{reservation.name}</div>
+          <div className="tkt-foot">
+            <span>{EVENT.venue.name} · {EVENT.dateLine} 2026</span>
+            <span className="tkt-code">{reservation.code}</span>
+          </div>
         </div>
-        <div className="border-t border-ink-300 px-4 py-2 sm:border-t-0 sm:border-r sm:border-ink-900">
-          <p className="text-[13px] leading-normal">
-            Friday October 2nd 2026
-            <br />
-            {EVENT.venue.name}
-          </p>
+        <div className="tkt-stub">
+          <span className="tkt-admit">ADMIT ONE</span>
         </div>
-        <div className="border-t border-ink-300 px-4 py-2 sm:border-t-0">
-          <p className="text-[13px] leading-normal text-red-700">
-            Doors open at {EVENT.doorsOpen}
-            <br />
-            {EVENT.timeShort}
-          </p>
-        </div>
-      </div>
-      <p className="border-t border-ink-300 px-4 py-3 text-[11px] leading-[1.4] text-ink-500">
-        Screenshot this stub or write down the code — you'll show it at the door.
+        <span className="tkt-notch tkt-notch--top" aria-hidden="true" />
+        <span className="tkt-notch tkt-notch--bottom" aria-hidden="true" />
+      </motion.div>
+
+      <p className="tkt-note">
+        This ticket is just for fun! We&apos;ll email you with updates, and hope to see you at the
+        event!
       </p>
     </motion.div>
   )
 }
 
-export default function Tickets() {
+export function Tickets() {
   const [remaining, setRemaining] = useState<number | null>(null)
   const [mine, setMine] = useState<Reservation | null>(null)
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
-  // Bot resistance: hidden honeypot field + a minimum time-to-fill check.
+  const [showTicket, setShowTicket] = useState(false)
   const honeypotRef = useRef<HTMLInputElement>(null)
   const mountedAt = useRef(Date.now())
 
@@ -76,86 +83,84 @@ export default function Tickets() {
     getMyReservation().then(setMine)
   }, [])
 
+  // lock body scroll while the ticket overlay is open
+  useEffect(() => {
+    document.body.style.overflow = showTicket ? 'hidden' : ''
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [showTicket])
+
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault()
     setError(null)
-
-    if (honeypotRef.current?.value || Date.now() - mountedAt.current < 1500) {
-      // Filled the invisible field or submitted inhumanly fast — quietly drop.
-      return
-    }
-
+    if (honeypotRef.current?.value || Date.now() - mountedAt.current < 1500) return
     setSubmitting(true)
     const result = await reserveTicket(name, email)
     setSubmitting(false)
-
     if (result.ok) {
       setMine(result.reservation)
       setRemaining(result.remaining)
+      setShowTicket(true)
     } else {
       setError(ERROR_MESSAGES[result.reason])
     }
   }
 
   const soldOut = remaining !== null && remaining <= 0 && !mine
+  const taken = remaining === null ? 0 : EVENT.capacity - remaining
+  const pct = Math.min(100, Math.round((taken / EVENT.capacity) * 100))
 
   return (
-    <section id="tickets" className="border-t border-ink-900">
-      <div className="mx-auto max-w-[1240px] px-[6%] py-24">
-        <div className="grid gap-12 md:grid-cols-2">
-          <Reveal>
-            <p className="eyebrow mb-4">
-              <span className="n">—</span> tickets
-            </p>
-            <h2 className="display mb-6">one hundred seats</h2>
-            <p className="max-w-[52ch] text-[18px] leading-[1.45] text-ink-700">
-              TEDx caps this event at {EVENT.capacity} attendees. Tickets are free. One per
-              person — a reservation holds a seat under your name.
-            </p>
+    <Section id="tickets">
+      <div className="smtix">
+        <Reveal>
+          <h2 className="smhead smtix-title">
+            One hundred seats. <span className="g">Yours is free.</span>
+          </h2>
+          <p className="smtix-lead">
+            TEDx caps this event at {EVENT.capacity} attendees, so every seat is reserved by name.
+            One ticket per person — claim yours before they&apos;re gone.
+          </p>
+        </Reveal>
 
-            <div className="mt-10 flex items-baseline gap-3 border-t border-ink-900 pt-4">
-              <span className="font-display text-[64px] font-black leading-[0.82] tracking-[-0.04em] text-red-500">
-                {remaining ?? '—'}
-              </span>
-              <span className="text-[13px] text-ink-500">of {EVENT.capacity} seats remaining</span>
-            </div>
-          </Reveal>
-
-          <Reveal delay={0.06}>
+        <Reveal delay={0.08}>
+          <div className="smtix-card">
             {mine ? (
-              <TicketStub reservation={mine} />
+              <div className="smtix-done">
+                <div className="smtix-done-badge">You&apos;re in ✓</div>
+                <h3>Seat reserved for {mine.name.split(' ')[0]}.</h3>
+                <p>Your ticket code is <b>{mine.code}</b>. We&apos;ll email event updates.</p>
+                <button className="smbtn primary" onClick={() => setShowTicket(true)}>
+                  View your ticket
+                </button>
+              </div>
             ) : soldOut ? (
-              <div className="border border-ink-900 bg-bone-50 p-6">
-                <h3 className="font-display text-[24px] font-bold lowercase tracking-[-0.02em]">
-                  sold out
-                </h3>
-                <p className="mt-3 text-[15px] text-ink-700">
-                  All {EVENT.capacity} seats are reserved. Seats sometimes open up — contact us
-                  for the waitlist.
+              <div className="smtix-done">
+                <h3>Sold out</h3>
+                <p>
+                  All {EVENT.capacity} seats are reserved. Seats sometimes open up — contact us for
+                  the waitlist.
                 </p>
               </div>
             ) : (
-              <form onSubmit={onSubmit} className="border border-ink-900 bg-bone-50 p-6">
-                <label className="label block text-ink-900" htmlFor="ticket-name">
-                  name
-                </label>
+              <form onSubmit={onSubmit}>
+                <h4>Reserve your seat</h4>
+
+                <label htmlFor="ticket-name">Name</label>
                 <input
                   id="ticket-name"
-                  className="field mt-2"
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   required
                   autoComplete="name"
-                  placeholder="first last"
+                  placeholder="First Last"
                 />
 
-                <label className="label mt-5 block text-ink-900" htmlFor="ticket-email">
-                  email
-                </label>
+                <label htmlFor="ticket-email">Email</label>
                 <input
                   id="ticket-email"
-                  className="field mt-2"
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -164,7 +169,6 @@ export default function Tickets() {
                   placeholder="you@example.com"
                 />
 
-                {/* Honeypot — hidden from humans, tempting for bots */}
                 <input
                   ref={honeypotRef}
                   type="text"
@@ -172,17 +176,17 @@ export default function Tickets() {
                   tabIndex={-1}
                   autoComplete="off"
                   aria-hidden="true"
-                  className="absolute -left-[9999px] h-0 w-0 opacity-0"
+                  className="smhp"
                 />
 
                 <AnimatePresence>
                   {error && (
                     <motion.p
+                      className="smtix-err"
                       initial={{ opacity: 0, height: 0 }}
                       animate={{ opacity: 1, height: 'auto' }}
                       exit={{ opacity: 0, height: 0 }}
-                      transition={{ duration: 0.2, ease: [0.2, 0, 0, 1] }}
-                      className="mt-4 text-[13px] font-bold text-red-700"
+                      transition={{ duration: 0.22 }}
                       role="alert"
                     >
                       {error}
@@ -190,19 +194,37 @@ export default function Tickets() {
                   )}
                 </AnimatePresence>
 
-                <button type="submit" disabled={submitting} className="btn btn--primary mt-6 w-full">
-                  {submitting ? 'reserving' : 'get ticket'}
-                </button>
+                <ArrowButton type="submit" disabled={submitting}>
+                  {submitting ? 'Reserving…' : 'Get my free ticket'}
+                </ArrowButton>
 
-                <p className="mt-4 text-[11px] leading-[1.4] text-ink-500">
+                <p className="fine">
                   One ticket per person. Your email holds your seat and receives event updates —
                   nothing else.
                 </p>
               </form>
             )}
-          </Reveal>
-        </div>
+
+            {/* thin fill line: how many of the 100 seats are claimed */}
+            <div className="smtix-fill" role="img" aria-label={`${taken} of ${EVENT.capacity} seats reserved`}>
+              <motion.i
+                initial={{ width: 0 }}
+                whileInView={{ width: `${pct}%` }}
+                viewport={{ once: true }}
+                transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+              />
+            </div>
+          </div>
+        </Reveal>
+
+        <p className="smtix-count">{taken} of {EVENT.capacity} seats reserved</p>
       </div>
-    </section>
+
+      <AnimatePresence>
+        {showTicket && mine && (
+          <TicketOverlay reservation={mine} onClose={() => setShowTicket(false)} />
+        )}
+      </AnimatePresence>
+    </Section>
   )
 }
