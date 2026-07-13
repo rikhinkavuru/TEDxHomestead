@@ -35,7 +35,7 @@ export const EVENT = {
     mapsUrl:
       'https://www.google.com/maps/search/?api=1&query=Homestead+High+School+4310+Homestead+Rd+Fort+Wayne+IN+46814',
   },
-  contactEmail: '', // fill in: organizer contact email
+  contactEmail: 'rikhinkavuru@gmail.com',
   socials: {
     instagram: '', // fill in
   },

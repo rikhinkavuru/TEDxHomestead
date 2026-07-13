@@ -49,12 +49,8 @@ export function Footer({ onNavigate }: { onNavigate: (id: string) => void }) {
           )}
         </div>
       </div>
-      <div className="smfooter-bar">{EVENT.dateLine} 2026 · {EVENT.venue.name} · Fort Wayne, IN</div>
       <div className="smfooter-brand" aria-hidden="true">
         <div className="smfooter-ghost">tedxhomestead.</div>
-        <div className="smfooter-tile">
-          <span className="smfooter-wm">TED<sup>x</sup></span>
-        </div>
       </div>
     </footer>
   )

@@ -328,8 +328,12 @@ h1, h2, h3, h4, h5, h6 { font-weight: 600; line-height: 1.2; color: var(--text-p
   height: 1.35em; min-width: 5.6em; vertical-align: bottom;
 }
 .rot-w {
-  position: absolute; left: 0; right: 0; top: 0; text-align: center; white-space: nowrap;
+  position: absolute; left: 0; top: 0; white-space: nowrap;
   color: #ff5a48; font-weight: 600;
+}
+/* on tablet/phone the word often sits alone on its line — center it there */
+@media (max-width: 900px) {
+  .rot-w { right: 0; text-align: center; }
 }
 .smhero-ctas { display: flex; gap: 12px; justify-content: center; margin-top: 44px; flex-wrap: wrap; }
 .smhero-facts {
@@ -640,6 +644,15 @@ h1, h2, h3, h4, h5, h6 { font-weight: 600; line-height: 1.2; color: var(--text-p
 }
 .smfaq-foot a { color: var(--red); text-decoration: none; }
 .smfaq-foot a:hover { text-decoration: underline; }
+.smfaq-copy {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: none; border: none; cursor: pointer; padding: 0;
+  color: var(--red); font-family: var(--font-sans); font-size: 0.9rem; font-weight: 500;
+  transition: color 0.15s ease;
+}
+.smfaq-copy:hover { color: var(--red-deep); }
+.smfaq-copy svg { flex: none; }
+.smfaq-copied { color: var(--text-tertiary); font-weight: 500; }
 
 /* ---- Final CTA ---- */
 .smfinal { padding: 0; }
@@ -672,7 +685,7 @@ h1, h2, h3, h4, h5, h6 { font-weight: 600; line-height: 1.2; color: var(--text-p
   max-width: 1280px; margin: 0 auto;
   display: grid; grid-template-columns: 1.3fr 1fr 1fr;
   gap: clamp(30px, 5vw, 80px);
-  padding: clamp(44px, 6vw, 80px) clamp(20px, 3vw, 28px) clamp(30px, 4vw, 56px);
+  padding: clamp(44px, 6vw, 80px) clamp(20px, 3vw, 28px) clamp(14px, 2vw, 24px);
 }
 .smfooter h4 { font-family: var(--font-display); font-weight: 500; font-size: clamp(1.4rem, 2.4vw, 1.9rem); letter-spacing: -0.03em; line-height: 1.25; color: #fff; }
 .smfooter .tag { margin-top: 14px; color: rgba(255, 255, 255, 0.8); font-size: 0.92rem; line-height: 1.6; max-width: 38ch; }
@@ -697,9 +710,8 @@ h1, h2, h3, h4, h5, h6 { font-weight: 600; line-height: 1.2; color: var(--text-p
    it, self-contained so it never overlaps the columns or the date bar */
 .smfooter-brand {
   position: relative; z-index: 1;
-  min-height: clamp(132px, 15vw, 230px);
   display: flex; align-items: flex-end; justify-content: center;
-  padding-top: clamp(8px, 2vw, 20px);
+  padding-top: clamp(4px, 1vw, 12px);
 }
 .smfooter-ghost {
   font-family: var(--font-display); font-weight: 600;
