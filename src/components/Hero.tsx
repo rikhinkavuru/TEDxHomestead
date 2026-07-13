@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
-import { EVENT } from '../data/event'
 import { ArrowButton, GhostButton } from './chrome'
 import { HeroBackground } from './HeroBackground'
 
@@ -60,16 +59,6 @@ export function Hero({ onNavigate }: { onNavigate: (id: string) => void }) {
       <motion.div className="smhero-ctas" variants={rise} custom={2} initial="hidden" animate="show">
         <ArrowButton onClick={() => onNavigate('tickets')}>Get Tickets</ArrowButton>
         <GhostButton onClick={() => onNavigate('speakers')}>Meet the speakers</GhostButton>
-      </motion.div>
-
-      <motion.div className="smhero-facts" variants={rise} custom={3} initial="hidden" animate="show">
-        <span className="fact"><b>{EVENT.dateLine}</b> 2026</span>
-        <span className="dot" />
-        <span className="fact">Doors {EVENT.doorsOpen}</span>
-        <span className="dot" />
-        <span className="fact">Talks {EVENT.timeShort}</span>
-        <span className="dot" />
-        <span className="fact">{EVENT.venue.name}</span>
       </motion.div>
     </div>
   )

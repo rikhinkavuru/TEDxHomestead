@@ -63,6 +63,7 @@ export function About() {
               <hr className="smabout-rule" />
               <span className="smabout-label">Format</span>
               <p className="smabout-format">{EVENT.format}</p>
+              <p className="smabout-doors">Doors will be opening at 4:30 PM</p>
             </div>
           </div>
         </Reveal>

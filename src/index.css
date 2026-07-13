@@ -238,7 +238,11 @@ h1, h2, h3, h4, h5, h6 { font-weight: 600; line-height: 1.2; color: var(--text-p
 /* the source image has black padding baked in; crop the top/bottom of that
    black so only the wordmark strip shows, sized down so it isn't overbearing */
 .smabout-card-logoimg { width: min(50%, 178px); height: 100%; object-fit: cover; }
-.smabout-card-body { padding: clamp(24px, 3vw, 34px); flex: 1; }
+.smabout-card-body { padding: clamp(24px, 3vw, 34px); flex: 1; display: flex; flex-direction: column; }
+.smabout-doors {
+  margin-top: auto; padding-top: 20px;
+  font-size: 0.85rem; color: var(--text-tertiary); letter-spacing: 0.01em;
+}
 .smabout-when { margin-top: 12px; font-family: var(--font-display); font-weight: 600; font-size: 1.25rem; letter-spacing: -0.02em; color: var(--text-primary); }
 .smabout-where { margin-top: 8px; color: var(--text-secondary); line-height: 1.55; }
 .smabout-addr { color: var(--text-tertiary); font-size: 0.92rem; }
