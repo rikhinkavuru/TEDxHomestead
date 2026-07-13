@@ -5,7 +5,6 @@ const PHOTOS = [
   '/hero/hero-1.png',
   '/hero/hero-2.jpg',
   '/hero/hero-3.png',
-  '/hero/hero-4.png',
   '/hero/hero-5.png',
 ]
 

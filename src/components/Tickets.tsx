@@ -12,6 +12,114 @@ const ERROR_MESSAGES: Record<string, string> = {
   error: 'Something went wrong reserving your seat. Please try again.',
 }
 
+/** Draw the ticket to a canvas and download it as a PNG keepsake. */
+async function saveTicket(r: Reservation) {
+  const W = 1000
+  const H = 560
+  const s = 2
+  const canvas = document.createElement('canvas')
+  canvas.width = W * s
+  canvas.height = H * s
+  const ctx = canvas.getContext('2d')
+  if (!ctx) return
+  ctx.scale(s, s)
+  try {
+    await document.fonts.ready
+  } catch {
+    /* fall back to system fonts */
+  }
+
+  const r16 = (x: number, y: number, w: number, h: number, rad: number) => {
+    ctx.beginPath()
+    ctx.moveTo(x + rad, y)
+    ctx.arcTo(x + w, y, x + w, y + h, rad)
+    ctx.arcTo(x + w, y + h, x, y + h, rad)
+    ctx.arcTo(x, y + h, x, y, rad)
+    ctx.arcTo(x, y, x + w, y, rad)
+    ctx.closePath()
+  }
+
+  // ticket body
+  const grad = ctx.createLinearGradient(0, 0, W, H)
+  grad.addColorStop(0, '#ff8a63')
+  grad.addColorStop(0.44, '#e62b1e')
+  grad.addColorStop(1, '#b51c12')
+  r16(0, 0, W, H, 26)
+  ctx.fillStyle = grad
+  ctx.fill()
+
+  const stubX = W - 128
+
+  // perforation
+  ctx.strokeStyle = 'rgba(255,255,255,0.5)'
+  ctx.lineWidth = 2
+  ctx.setLineDash([10, 10])
+  ctx.beginPath()
+  ctx.moveTo(stubX, 24)
+  ctx.lineTo(stubX, H - 24)
+  ctx.stroke()
+  ctx.setLineDash([])
+
+  // main text
+  const pad = 60
+  ctx.textBaseline = 'alphabetic'
+  ctx.fillStyle = 'rgba(255,255,255,0.88)'
+  ctx.font = "500 20px 'DM Mono', ui-monospace, monospace"
+  ctx.fillText('TEDXHOMESTEAD PRESENTS', pad, 78)
+
+  ctx.fillStyle = '#ffffff'
+  ctx.font = "600 74px 'Bricolage Grotesque', sans-serif"
+  const name = r.name.toUpperCase()
+  const maxW = stubX - pad - 40
+  const words = name.split(' ')
+  const lines: string[] = []
+  let line = ''
+  for (const w of words) {
+    const test = line ? `${line} ${w}` : w
+    if (ctx.measureText(test).width > maxW && line) {
+      lines.push(line)
+      line = w
+    } else {
+      line = test
+    }
+  }
+  if (line) lines.push(line)
+  const nameLines = lines.slice(0, 2)
+  let ny = 250
+  for (const l of nameLines) {
+    ctx.fillText(l, pad, ny)
+    ny += 78
+  }
+
+  ctx.font = "500 22px 'DM Mono', ui-monospace, monospace"
+  ctx.fillStyle = 'rgba(255,255,255,0.92)'
+  ctx.fillText(`${EVENT.venue.name} · ${EVENT.dateLine} 2026`, pad, H - 86)
+  ctx.fillStyle = 'rgba(255,255,255,0.75)'
+  ctx.fillText(r.code, pad, H - 54)
+
+  // ADMIT ONE, vertical
+  ctx.save()
+  ctx.translate(stubX + 64, H / 2)
+  ctx.rotate(Math.PI / 2)
+  ctx.textAlign = 'center'
+  ctx.fillStyle = 'rgba(255,255,255,0.92)'
+  ctx.font = "500 26px 'DM Mono', ui-monospace, monospace"
+  ctx.fillText('A D M I T   O N E', 0, 0)
+  ctx.restore()
+
+  canvas.toBlob((blob) => {
+    if (!blob) return
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `tedxhomestead-ticket-${r.code}.png`
+    document.body.appendChild(a)
+    a.click()
+    a.remove()
+    URL.revokeObjectURL(url)
+  }, 'image/png')
+}
+
 /** Full-screen ticket reveal — dims the page, floats a keepsake ticket. */
 function TicketOverlay({ reservation, onClose }: { reservation: Reservation; onClose: () => void }) {
   useEffect(() => {
@@ -58,6 +166,13 @@ function TicketOverlay({ reservation, onClose }: { reservation: Reservation; onC
         <span className="tkt-notch tkt-notch--top" aria-hidden="true" />
         <span className="tkt-notch tkt-notch--bottom" aria-hidden="true" />
       </motion.div>
+
+      <button className="tkt-save" onClick={() => saveTicket(reservation)}>
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M8 2v8m0 0 3-3m-3 3L5 7M3 12v1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+        Save
+      </button>
 
       <p className="tkt-note">
         This ticket is just for fun! We&apos;ll email you with updates, and hope to see you at the

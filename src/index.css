@@ -563,6 +563,15 @@ h1, h2, h3, h4, h5, h6 { font-weight: 600; line-height: 1.2; color: var(--text-p
 }
 .tkt-notch--top { top: -10px; }
 .tkt-notch--bottom { bottom: -10px; }
+.tkt-save {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(255, 255, 255, 0.1); color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.22); border-radius: 999px;
+  padding: 10px 20px; cursor: pointer;
+  font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase;
+  transition: background 0.18s ease;
+}
+.tkt-save:hover { background: rgba(255, 255, 255, 0.18); }
 .tkt-note {
   max-width: 42ch; text-align: center; color: rgba(255, 255, 255, 0.78);
   font-family: var(--font-mono); font-size: 0.82rem; line-height: 1.7;
