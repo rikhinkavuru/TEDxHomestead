@@ -313,18 +313,26 @@ h1, h2, h3, h4, h5, h6 { font-weight: 600; line-height: 1.2; color: var(--text-p
 }
 .smhero h1 .h1-icon svg { width: 100%; height: 100%; }
 .smhero-tagline {
-  margin: 20px auto 0; max-width: 34ch; text-align: center;
+  margin: 20px auto 0; max-width: 40ch;
+  display: flex; flex-direction: column; align-items: center; text-align: center;
   color: rgba(255, 255, 255, 0.92);
   font-family: var(--font-display); font-weight: 500;
-  font-size: clamp(1.15rem, 2.7vw, 1.9rem); letter-spacing: -0.02em; line-height: 1.25;
   text-shadow: 0 1px 14px rgba(0, 0, 0, 0.4);
+}
+.smhero-tagline-line {
+  font-size: clamp(1.15rem, 2.7vw, 1.85rem); letter-spacing: -0.02em; line-height: 1.25;
+}
+.smhero-tagline-sub {
+  margin-top: 6px;
+  font-size: clamp(0.95rem, 1.8vw, 1.15rem); font-weight: 500;
+  color: rgba(255, 255, 255, 0.68); letter-spacing: -0.01em;
 }
 .rot {
   display: inline-block; position: relative; overflow: hidden;
-  height: 1.25em; min-width: 6.4em; text-align: left; vertical-align: bottom;
+  height: 1.25em; min-width: 6.2em; vertical-align: bottom;
 }
 .rot-w {
-  position: absolute; left: 0; top: 0; white-space: nowrap;
+  position: absolute; left: 0; right: 0; top: 0; text-align: center; white-space: nowrap;
   color: #ff5a48; font-weight: 600;
 }
 .smhero-ctas { display: flex; gap: 12px; justify-content: center; margin-top: 44px; flex-wrap: wrap; }
@@ -739,6 +747,11 @@ section[id], div[id='top'] { scroll-margin-top: 76px; }
   .smfinal-row { grid-template-columns: 1fr; }
   .smfooter-inner { grid-template-columns: 1fr; gap: 34px; }
   .smnav-links { display: none; }
+}
+/* phones: no navbar at all — the announcement bar + hero CTA cover it */
+@media (max-width: 640px) {
+  .smnav { display: none; }
+  .smhero { padding-top: calc(var(--bar-h) + 44px); }
 }
 @media (max-width: 560px) {
   .smpeople { grid-template-columns: 1fr; }

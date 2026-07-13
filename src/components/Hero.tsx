@@ -50,10 +50,17 @@ export function Hero({ onNavigate }: { onNavigate: (id: string) => void }) {
 
       <motion.h1 variants={rise} custom={0} initial="hidden" animate="show">
         TED<span className="enddot">x</span>Homestead
+        <br />
+        High School
       </motion.h1>
 
       <motion.p className="smhero-tagline" variants={rise} custom={1} initial="hidden" animate="show">
-        The ideas stage for your <RotatingWord />
+        <span className="smhero-tagline-line">
+          Ideas worth spreading — for your <RotatingWord />
+        </span>
+        <span className="smhero-tagline-sub">
+          Six live talks, one night, a hundred seats.
+        </span>
       </motion.p>
 
       <motion.div className="smhero-ctas" variants={rise} custom={2} initial="hidden" animate="show">
