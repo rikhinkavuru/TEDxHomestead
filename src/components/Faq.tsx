@@ -32,7 +32,7 @@ export function Faq() {
     <Section id="faq">
       <div className="smfaq-head">
         <Reveal>
-          <h2 className="smhead">The fine print, <span className="g">in plain English.</span></h2>
+          <h2 className="smhead">FAQ</h2>
         </Reveal>
       </div>
       <div className="smfaq-list">

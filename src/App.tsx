@@ -6,7 +6,6 @@ import { About } from './components/About'
 import { Speakers } from './components/Speakers'
 import { Tickets } from './components/Tickets'
 import { Faq } from './components/Faq'
-import { FinalCta } from './components/FinalCta'
 import { Footer } from './components/Footer'
 
 export default function App() {
@@ -24,7 +23,6 @@ export default function App() {
         <Speakers />
         <Tickets />
         <Faq />
-        <FinalCta onNavigate={scrollToSection} />
       </main>
       <Footer onNavigate={scrollToSection} />
     </>

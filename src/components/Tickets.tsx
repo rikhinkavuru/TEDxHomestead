@@ -111,8 +111,9 @@ async function saveTicket(r: Reservation) {
     if (!blob) return
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
+    const safeName = r.name.replace(/[^a-zA-Z0-9]/g, '') || 'Guest'
     a.href = url
-    a.download = `tedxhomestead-ticket-${r.code}.png`
+    a.download = `${safeName}TEDxTicket.png`
     document.body.appendChild(a)
     a.click()
     a.remove()
@@ -331,8 +332,6 @@ export function Tickets() {
             </div>
           </div>
         </Reveal>
-
-        <p className="smtix-count">{taken} of {EVENT.capacity} seats reserved</p>
       </div>
 
       <AnimatePresence>
