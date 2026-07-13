@@ -224,8 +224,6 @@ export function Tickets() {
   }
 
   const soldOut = remaining !== null && remaining <= 0 && !mine
-  const taken = remaining === null ? 0 : EVENT.capacity - remaining
-  const pct = Math.min(100, Math.round((taken / EVENT.capacity) * 100))
 
   return (
     <Section id="tickets">
@@ -320,16 +318,6 @@ export function Tickets() {
                 </p>
               </form>
             )}
-
-            {/* thin fill line: how many of the 100 seats are claimed */}
-            <div className="smtix-fill" role="img" aria-label={`${taken} of ${EVENT.capacity} seats reserved`}>
-              <motion.i
-                initial={{ width: 0 }}
-                whileInView={{ width: `${pct}%` }}
-                viewport={{ once: true }}
-                transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-              />
-            </div>
           </div>
         </Reveal>
       </div>

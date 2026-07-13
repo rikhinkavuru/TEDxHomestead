@@ -1,4 +1,3 @@
-import { TedxLogo } from './chrome'
 import { EVENT } from '../data/event'
 
 const LINKS: Array<{ label: string; id: string }> = [
@@ -54,7 +53,7 @@ export function Footer({ onNavigate }: { onNavigate: (id: string) => void }) {
       <div className="smfooter-brand" aria-hidden="true">
         <div className="smfooter-ghost">tedxhomestead.</div>
         <div className="smfooter-tile">
-          <TedxLogo className="smfooter-tile-logo" />
+          <span className="smfooter-wm">TED<sup>x</sup></span>
         </div>
       </div>
     </footer>
