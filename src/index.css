@@ -675,27 +675,35 @@ h1, h2, h3, h4, h5, h6 { font-weight: 600; line-height: 1.2; color: var(--text-p
 .smfooter-bar {
   position: relative; z-index: 2;
   max-width: 1280px; margin: 0 auto;
-  padding: 0 clamp(20px, 3vw, 28px) 16px;
+  padding: 0 clamp(20px, 3vw, 28px) clamp(20px, 3vw, 30px);
   font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase;
   color: rgba(255, 255, 255, 0.7); text-align: right;
 }
-.smfooter-ghost {
+/* dedicated bottom brand band: the giant watermark with the tile centered on
+   it, self-contained so it never overlaps the columns or the date bar */
+.smfooter-brand {
   position: relative; z-index: 1;
+  min-height: clamp(132px, 15vw, 230px);
+  display: flex; align-items: flex-end; justify-content: center;
+  padding-top: clamp(8px, 2vw, 20px);
+}
+.smfooter-ghost {
   font-family: var(--font-display); font-weight: 600;
-  font-size: clamp(3.2rem, 12.5vw, 13rem); letter-spacing: -0.05em; line-height: 0.78;
+  font-size: clamp(2.6rem, 13vw, 13rem); letter-spacing: -0.05em; line-height: 0.72;
   color: rgba(255, 255, 255, 0.16);
-  text-align: center; white-space: nowrap;
-  transform: translateY(0.16em);
+  text-align: center; white-space: nowrap; width: 100%;
+  transform: translateY(0.14em);
   user-select: none; pointer-events: none;
 }
 .smfooter-tile {
-  position: absolute; left: 50%; bottom: 8%; transform: translateX(-50%);
-  width: 118px; height: 118px; border-radius: 26px; z-index: 3;
-  background: linear-gradient(180deg, #ffffff, #fdf0ee);
-  box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.28), 0 30px 60px -20px rgba(26, 7, 8, 0.55);
+  position: absolute; left: 50%; bottom: clamp(14px, 3vw, 28px); transform: translateX(-50%);
+  width: clamp(112px, 24vw, 150px); aspect-ratio: 150 / 104;
+  border-radius: 22px; z-index: 3; overflow: hidden;
+  background: #000;
+  box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.22), 0 30px 60px -20px rgba(26, 7, 8, 0.55);
   display: flex; align-items: center; justify-content: center;
-  color: var(--red);
 }
+.smfooter-tile-logo { width: 72%; height: 100%; object-fit: cover; }
 
 
 /* ---- Anchors clear the fixed nav ---- */
@@ -720,6 +728,8 @@ section[id], div[id='top'] { scroll-margin-top: 76px; }
 }
 @media (max-width: 560px) {
   .smpeople { grid-template-columns: 1fr; }
+  .smbar-msg { font-size: 0.78rem; }
+  .smbar-arr { display: none; }
 }
 
 /* ---- Reduced motion ---- */

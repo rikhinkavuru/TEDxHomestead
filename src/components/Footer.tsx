@@ -1,4 +1,4 @@
-import { XMark } from './chrome'
+import { TedxLogo } from './chrome'
 import { EVENT } from '../data/event'
 
 const LINKS: Array<{ label: string; id: string }> = [
@@ -51,9 +51,11 @@ export function Footer({ onNavigate }: { onNavigate: (id: string) => void }) {
         </div>
       </div>
       <div className="smfooter-bar">{EVENT.dateLine} 2026 · {EVENT.venue.name} · Fort Wayne, IN</div>
-      <div className="smfooter-ghost" aria-hidden="true">tedxhomestead.</div>
-      <div className="smfooter-tile" aria-hidden="true">
-        <XMark size={58} />
+      <div className="smfooter-brand" aria-hidden="true">
+        <div className="smfooter-ghost">tedxhomestead.</div>
+        <div className="smfooter-tile">
+          <TedxLogo className="smfooter-tile-logo" />
+        </div>
       </div>
     </footer>
   )
