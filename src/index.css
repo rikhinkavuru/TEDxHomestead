@@ -461,6 +461,8 @@ h1, h2, h3, h4, h5, h6 { font-weight: 600; line-height: 1.2; color: var(--text-p
 }
 .smspeaker-art img {
   position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+  /* headshots are portrait; keep faces in frame — crop from the bottom, not the top */
+  object-position: 50% 12%;
 }
 .smspeaker-art .tba {
   font-family: var(--font-sans); font-weight: 600; font-size: 0.78rem;
