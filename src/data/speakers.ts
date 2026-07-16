@@ -15,12 +15,12 @@ export interface Speaker {
  */
 export const SPEAKERS: Speaker[] = [
   {
-    id: 'speaker-1',
-    name: 'Speaker Name',
-    title: 'Title / Role',
-    talkTitle: 'Talk title goes here',
-    bio: 'A short bio for this speaker — who they are, what they do, and why their idea matters.',
-    headshot: '/headshots/speaker-1.jpg',
+    id: 'barry-labov',
+    name: 'Barry LaBov',
+    title: 'Founder, LABOV Marketing, Consulting and Training',
+    talkTitle: 'The Power of Differentiation',
+    bio: 'Barry LaBov is a two-time Ernst & Young Entrepreneur of the Year, a recognized author, keynote speaker, brand strategist, and founder of LABOV Marketing, Consulting, and Training. His agency specializes in helping brands and individuals discover and celebrate their differentiation. LABOV’s clientele includes Harley-Davidson, The Macallan Scotch whisky, Audi, and other leading brands worldwide. His book, “The Power of Differentiation: Win Hearts, Minds, and Market Share,” was the #1 New Release in Marketing on Amazon. Barry has guested on nearly 100 podcasts and is co-host of Difference Talks, which has featured top-selling authors, leading CEOs, and performers in sports and music. Barry keynotes nationwide and serves as a resource for universities to help inspire our future generation of leaders.',
+    headshot: '/headshots/barry-labov.jpg',
   },
   {
     id: 'speaker-2',

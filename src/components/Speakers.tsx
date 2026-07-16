@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Section, Reveal } from './chrome'
 import { SPEAKERS, type Speaker } from '../data/speakers'
 
@@ -25,6 +25,37 @@ function Art({ speaker }: { speaker: Speaker }) {
     <div className="smspeaker-art">
       {placeholder ? <span className="tba">Reveal soon</span> : initials(speaker.name)}
     </div>
+  )
+}
+
+function Bio({ speaker }: { speaker: Speaker }) {
+  const [open, setOpen] = useState(false)
+  return (
+    <>
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            className="bio-wrap"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <p className="bio" id={`bio-${speaker.id}`}>{speaker.bio}</p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+      <button
+        type="button"
+        className="bio-toggle"
+        aria-expanded={open}
+        aria-controls={`bio-${speaker.id}`}
+        onClick={() => setOpen(v => !v)}
+      >
+        {open ? 'Hide bio' : 'Read bio'}
+        <span className="chev" aria-hidden="true">{open ? '−' : '+'}</span>
+      </button>
+    </>
   )
 }
 
@@ -56,6 +87,7 @@ export function Speakers() {
                 <p className="talk">
                   {placeholder ? 'We’re finalizing this speaker now.' : `“${s.talkTitle}”`}
                 </p>
+                {!placeholder && s.bio.trim() && <Bio speaker={s} />}
               </div>
             </motion.article>
           )

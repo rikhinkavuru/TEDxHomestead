@@ -472,6 +472,22 @@ h1, h2, h3, h4, h5, h6 { font-weight: 600; line-height: 1.2; color: var(--text-p
 .smspeaker-body h3 { font-family: var(--font-display); font-weight: 500; font-size: 1.25rem; letter-spacing: -0.02em; margin-top: 8px; }
 .smspeaker-body .role { color: var(--text-tertiary); font-size: 0.85rem; margin-top: 3px; }
 .smspeaker-body .talk { color: var(--text-secondary); font-size: 0.92rem; line-height: 1.55; margin-top: 10px; }
+.smspeaker-body .bio-wrap { overflow: hidden; }
+.smspeaker-body .bio {
+  color: var(--text-secondary); font-size: 0.88rem; line-height: 1.6;
+  padding-top: 12px; margin-top: 12px; border-top: 1px dashed var(--border);
+}
+.smspeaker-body .bio-toggle {
+  display: inline-flex; align-items: center; gap: 6px;
+  margin-top: 12px; padding: 0;
+  background: none; border: none; cursor: pointer;
+  font-family: var(--font-sans); font-weight: 600; font-size: 0.8rem;
+  letter-spacing: 0.02em; color: var(--red);
+  transition: color 0.2s ease;
+  min-height: 44px;
+}
+.smspeaker-body .bio-toggle:hover { color: var(--red-deep); }
+.smspeaker-body .bio-toggle .chev { font-size: 0.95rem; line-height: 1; }
 
 /* ---- Tickets — single centered card ---- */
 .smtix { max-width: 480px; margin: 0 auto; text-align: center; }
