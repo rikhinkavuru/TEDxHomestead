@@ -17,7 +17,13 @@ function Art({ speaker }: { speaker: Speaker }) {
   if (!placeholder && !failed) {
     return (
       <div className="smspeaker-art">
-        <img src={speaker.headshot} alt={speaker.name} loading="lazy" onError={() => setFailed(true)} />
+        <img
+          src={speaker.headshot}
+          alt={speaker.name}
+          loading="lazy"
+          style={speaker.headshotPosition ? { objectPosition: speaker.headshotPosition } : undefined}
+          onError={() => setFailed(true)}
+        />
       </div>
     )
   }

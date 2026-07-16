@@ -6,6 +6,8 @@ export interface Speaker {
   bio: string
   /** Path under /public/headshots/, e.g. "/headshots/speaker-1.jpg" */
   headshot: string
+  /** CSS object-position to keep the face centered in the crop (default "50% 12%") */
+  headshotPosition?: string
 }
 
 /**
