@@ -22,11 +22,11 @@ export const EVENT = {
   capacity: 100,
   // THEME — placeholder. Replace once the final theme is chosen.
   theme: {
-    name: 'Small Steps, Big Impact',
+    name: 'Bold Ideas, Lasting Change',
     // The part of the name rendered in red (leave '' for none).
-    accent: 'Big Impact',
+    accent: 'Lasting Change',
     blurb:
-      'Change rarely happens all at once. Our theme celebrates the small, persistent actions that unlock outsized outcomes — in our schools, neighborhoods, and the wider world. Speakers will share ideas and stories that show how momentum starts with a single step.',
+      'The ideas that reshape a life rarely shout — they take root and hold. Our speakers explore what it takes to stand apart, protect what matters, build real trust, and turn conviction into impact that outlasts the moment. From differentiation and financial know-how to preserving endangered cultures and strengthening the bonds closest to home, these are ideas built to endure.',
   },
   venue: {
     name: 'Homestead High School',
