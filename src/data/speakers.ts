@@ -31,6 +31,7 @@ export const SPEAKERS: Speaker[] = [
     talkTitle: 'How to Raise Teens Who Come to You When It Matters Most',
     bio: 'Lynn Cross is a speaker, coach, and founder of Illumalight, where she helps parents build the kind of trust and connection that allows children to come to them when it matters most. After a 25-year corporate career leading teams and shaping consumer behavior for some of the world’s largest brands, Lynn turned her focus to one question: What helps teens feel safe enough to come to their parents when life gets hard? Today, through keynote speaking, coaching, courses, and practical family connection tools, she helps parents make the small shifts that build lasting trust and emotional safety. Her work is built around one simple but transformative belief: connection is one of the most overlooked forms of safety.',
     headshot: '/headshots/lynn-cross.jpg',
+    headshotPosition: '50% 40%',
   },
   {
     id: 'speaker-3',
