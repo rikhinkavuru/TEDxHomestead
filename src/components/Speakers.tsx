@@ -70,7 +70,7 @@ export function Speakers() {
     <Section id="speakers">
       <div className="smpeople-head">
         <Reveal>
-          <h2 className="smhead">Six talks, <span className="g">one evening.</span></h2>
+          <h2 className="smhead">Six speakers, <span className="g">one evening.</span></h2>
         </Reveal>
       </div>
       <div className="smpeople">
@@ -87,12 +87,17 @@ export function Speakers() {
             >
               <Art speaker={s} />
               <div className="smspeaker-body">
-                <div className="idx-label">Talk 0{i + 1}</div>
+                <div className="idx-label">Speaker 0{i + 1}</div>
                 <h3>{placeholder ? 'To be announced' : s.name}</h3>
                 <div className="role">{placeholder ? 'Name drops soon' : s.title}</div>
                 <p className="talk">
-                  {placeholder ? 'We’re finalizing this speaker now.' : `“${s.talkTitle}”`}
+                  {placeholder
+                    ? 'We’re finalizing this speaker now.'
+                    : s.talkTitle.trim()
+                      ? `“${s.talkTitle}”`
+                      : 'Talk title coming soon.'}
                 </p>
+                {!placeholder && s.talkNote && <p className="talk-note">{s.talkNote}</p>}
                 {!placeholder && s.bio.trim() && <Bio speaker={s} />}
               </div>
             </motion.article>

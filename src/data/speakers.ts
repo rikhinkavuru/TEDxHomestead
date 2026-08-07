@@ -2,7 +2,10 @@ export interface Speaker {
   id: string
   name: string
   title: string
+  /** Leave empty while the talk title is still being finalized. */
   talkTitle: string
+  /** Optional note shown under the talk line, e.g. a shared talk credit. */
+  talkNote?: string
   bio: string
   /** Path under /public/headshots/, e.g. "/headshots/speaker-1.jpg" */
   headshot: string
@@ -34,20 +37,24 @@ export const SPEAKERS: Speaker[] = [
     headshotPosition: '50% 25%',
   },
   {
-    id: 'speaker-3',
-    name: 'Speaker Name',
-    title: 'Title / Role',
-    talkTitle: 'Talk title goes here',
-    bio: 'A short bio for this speaker — who they are, what they do, and why their idea matters.',
-    headshot: '/headshots/speaker-3.jpg',
+    id: 'shannon-bischoff',
+    name: 'Dr. Shannon Bischoff',
+    title: 'UNESCO Chair; Purdue University Named Professor; Chair, Communication Sciences and Disorders, PFW',
+    talkTitle: '',
+    talkNote: 'A shared talk with Prof. Mary Encabo Bischoff',
+    bio: 'Dr. Shannon Bischoff is a UNESCO Chair, Purdue University Named Professor, and Chair of the Department of Communication Sciences and Disorders at PFW. He is also the President of the Endangered Language Fund and Assistant Editor of the Journal Indigenous Languages Rights and Realities. His research spans computational linguistics, linguistic anthropology, language rights, and human rights. He has secured over $2 million in funding, published widely with leading presses, and collaborates globally with Indigenous and non-dominant language communities, as well as with governments, the United Nations, and the United Nations Education, Science, and Culture Organization (UNESCO).',
+    headshot: '/headshots/shannon-bischoff.jpg',
+    headshotPosition: '50% 8%',
   },
   {
-    id: 'speaker-4',
-    name: 'Speaker Name',
-    title: 'Title / Role',
-    talkTitle: 'Talk title goes here',
-    bio: 'A short bio for this speaker — who they are, what they do, and why their idea matters.',
-    headshot: '/headshots/speaker-4.jpg',
+    id: 'mary-encabo-bischoff',
+    name: 'Prof. Mary Encabo Bischoff',
+    title: 'UNESCO Chair; Clinical Assistant Professor of Linguistics; Director, Teaching English as a New Language, PFW',
+    talkTitle: '',
+    talkNote: 'A shared talk with Dr. Shannon Bischoff',
+    bio: 'Prof. Mary Encabo Bischoff is a UNESCO Chair, Clinical Assistant Professor of Linguistics, and Director of the Teaching English as a New Language program at Purdue University Fort Wayne. At PFW, she not only teaches college students, but also works with local ELL teachers and international colleagues. She created and continues to direct the English Language Partners (ELP) Program, which has served over 2,000 individuals, including indigenous communities, from Myanmar, Thailand, Nepal, the Philippines, Ecuador, India, Japan, and members of our local immigrant and refugee communities. She previously served on the board of Fort Wayne Sister Cities, which led to exchanges and partnerships with universities and high schools in Myanmar and Japan. She has advised Ministers of Education and been invited to speak at the UNESCO headquarters in Paris, the United Nations in New York City, and at the 2024 UN Global Education Meeting.',
+    headshot: '/headshots/mary-encabo-bischoff.jpg',
+    headshotPosition: '50% 6%',
   },
   {
     id: 'speaker-5',
