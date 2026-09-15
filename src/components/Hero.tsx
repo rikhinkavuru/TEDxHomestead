@@ -52,7 +52,7 @@ export function Hero({ onNavigate }: { onNavigate: (id: string) => void }) {
       </motion.h1>
 
       <motion.p className="smhero-tagline" variants={rise} custom={1} initial="hidden" animate="show">
-        Six live talks, one unforgettable night, and ideas worth spreading for your{' '}
+        Seven live talks, one unforgettable night, and ideas worth spreading for your{' '}
         <RotatingWord />
       </motion.p>
 

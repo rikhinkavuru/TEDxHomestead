@@ -70,7 +70,7 @@ export function Speakers() {
     <Section id="speakers">
       <div className="smpeople-head">
         <Reveal>
-          <h2 className="smhead">Six talks, <span className="g">one evening.</span></h2>
+          <h2 className="smhead">Seven talks, <span className="g">one evening.</span></h2>
         </Reveal>
       </div>
       <div className="smpeople">

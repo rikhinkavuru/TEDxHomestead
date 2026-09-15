@@ -15,7 +15,7 @@ export function Footer({ onNavigate }: { onNavigate: (id: string) => void }) {
           <h4>Ideas worth spreading, from our own backyard.</h4>
           <p className="tag">
             This independent TEDx event is operated under license from TED.
-            Organized and run by students at {EVENT.venue.name}.
+            Organized and run by students at Homestead High School.
           </p>
         </div>
         <div className="smfooter-col">
@@ -27,10 +27,10 @@ export function Footer({ onNavigate }: { onNavigate: (id: string) => void }) {
         <div className="smfooter-col">
           <div className="h">Find us</div>
           <a href={EVENT.venue.mapsUrl} target="_blank" rel="noopener noreferrer">
-            {EVENT.venue.name}
+            {EVENT.venue.name}, {EVENT.venue.branch}
           </a>
           <a href={EVENT.venue.mapsUrl} target="_blank" rel="noopener noreferrer">
-            4310 Homestead Rd, Fort Wayne, IN
+            {EVENT.venue.address}
           </a>
           {EVENT.contactEmail && (
             <p className="smfooter-support">

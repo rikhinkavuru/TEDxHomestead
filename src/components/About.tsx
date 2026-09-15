@@ -53,9 +53,9 @@ export function About() {
               <span className="smabout-label">Event</span>
               <p className="smabout-when">{EVENT.date}, {EVENT.time}</p>
               <p className="smabout-where">
-                {EVENT.venue.name} · Fort Wayne, Indiana
+                The {EVENT.venue.room} · {EVENT.venue.name}, {EVENT.venue.branch}
                 <br />
-                <span className="smabout-addr">4310 Homestead Rd, Fort Wayne, IN 46814</span>
+                <span className="smabout-addr">{EVENT.venue.address}</span>
               </p>
               <a className="smabout-dir" href={EVENT.venue.mapsUrl} target="_blank" rel="noreferrer">
                 Get directions →
@@ -63,7 +63,7 @@ export function About() {
               <hr className="smabout-rule" />
               <span className="smabout-label">Format</span>
               <p className="smabout-format">{EVENT.format}</p>
-              <p className="smabout-doors">Doors will be opening at 4:30 PM</p>
+              <p className="smabout-doors">Doors will be opening at {EVENT.doorsOpen}</p>
             </div>
           </div>
         </Reveal>
