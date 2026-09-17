@@ -14,6 +14,22 @@ function initials(name: string) {
 function Art({ speaker }: { speaker: Speaker }) {
   const [failed, setFailed] = useState(false)
   const placeholder = isPlaceholder(speaker)
+  if (speaker.people?.length) {
+    return (
+      <div className="smspeaker-art smspeaker-art--duo">
+        {speaker.people.map(p => (
+          <div className="duo-half" key={p.name}>
+            <img
+              src={p.headshot}
+              alt={p.name}
+              loading="lazy"
+              style={p.headshotPosition ? { objectPosition: p.headshotPosition } : undefined}
+            />
+          </div>
+        ))}
+      </div>
+    )
+  }
   if (!placeholder && !failed) {
     return (
       <div className="smspeaker-art">
@@ -36,6 +52,8 @@ function Art({ speaker }: { speaker: Speaker }) {
 
 function Bio({ speaker }: { speaker: Speaker }) {
   const [open, setOpen] = useState(false)
+  const people = speaker.people ?? []
+  const many = people.length > 1
   return (
     <>
       <AnimatePresence initial={false}>
@@ -47,7 +65,17 @@ function Bio({ speaker }: { speaker: Speaker }) {
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
           >
-            <p className="bio" id={`bio-${speaker.id}`}>{speaker.bio}</p>
+            <div id={`bio-${speaker.id}`}>
+              {people.length
+                ? people.map(p => (
+                    <div className="bio-person" key={p.name}>
+                      <div className="bio-person-name">{p.name}</div>
+                      <div className="bio-person-role">{p.title}</div>
+                      <p className="bio">{p.bio}</p>
+                    </div>
+                  ))
+                : <p className="bio">{speaker.bio}</p>}
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -58,7 +86,7 @@ function Bio({ speaker }: { speaker: Speaker }) {
         aria-controls={`bio-${speaker.id}`}
         onClick={() => setOpen(v => !v)}
       >
-        {open ? 'Hide bio' : 'Read bio'}
+        {open ? (many ? 'Hide bios' : 'Hide bio') : many ? 'Read bios' : 'Read bio'}
         <span className="chev" aria-hidden="true">{open ? '−' : '+'}</span>
       </button>
     </>
@@ -70,7 +98,7 @@ export function Speakers() {
     <Section id="speakers">
       <div className="smpeople-head">
         <Reveal>
-          <h2 className="smhead">Seven talks, <span className="g">one evening.</span></h2>
+          <h2 className="smhead">Six talks, <span className="g">one evening.</span></h2>
         </Reveal>
       </div>
       <div className="smpeople">
@@ -98,7 +126,7 @@ export function Speakers() {
                       : 'Talk title coming soon.'}
                 </p>
                 {!placeholder && s.talkNote && <p className="talk-note">{s.talkNote}</p>}
-                {!placeholder && s.bio.trim() && <Bio speaker={s} />}
+                {!placeholder && (s.bio.trim() || s.people?.length) && <Bio speaker={s} />}
               </div>
             </motion.article>
           )

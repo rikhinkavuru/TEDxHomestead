@@ -1,3 +1,11 @@
+export interface Person {
+  name: string
+  title: string
+  bio: string
+  headshot: string
+  headshotPosition?: string
+}
+
 export interface Speaker {
   id: string
   name: string
@@ -11,6 +19,8 @@ export interface Speaker {
   headshot: string
   /** CSS object-position to keep the face centered in the crop (default "50% 12%") */
   headshotPosition?: string
+  /** Two people sharing one talk — renders a single card with both headshots. */
+  people?: Person[]
 }
 
 /**
@@ -30,31 +40,35 @@ export const SPEAKERS: Speaker[] = [
   {
     id: 'lynn-cross',
     name: 'Lynn Cross',
-    title: 'Speaker, Coach & Founder, Illumalight',
+    title: 'Speaker & Parenting Coach',
     talkTitle: 'How to Raise Teens Who Come to You When It Matters Most',
-    bio: 'Lynn Cross is a speaker, coach, and founder of Illumalight, where she helps parents build the kind of trust and connection that allows children to come to them when it matters most. After a 25-year corporate career leading teams and shaping consumer behavior for some of the world’s largest brands, Lynn turned her focus to one question: What helps teens feel safe enough to come to their parents when life gets hard? Today, through keynote speaking, coaching, courses, and practical family connection tools, she helps parents make the small shifts that build lasting trust and emotional safety. Her work is built around one simple but transformative belief: connection is one of the most overlooked forms of safety.',
+    bio: 'Lynn Cross is a parenting coach and speaker who helps parents build the kind of trust and connection that allows their children to come to them when it matters most. After a 25-year corporate career leading teams and shaping consumer behavior for some of the world’s largest brands, Lynn turned her focus to one question: What helps teens feel safe enough to come to their parents when life gets hard? Today, through speaking, coaching, and practical parenting resources, she helps parents understand what’s happening beneath difficult moments and make small shifts in how they respond that build lasting trust and emotional safety. Her work is built around one simple but transformative belief: connection is one of the most overlooked forms of safety.',
     headshot: '/headshots/lynn-cross.jpg',
     headshotPosition: '50% 25%',
   },
   {
-    id: 'shannon-bischoff',
-    name: 'Dr. Shannon Bischoff',
-    title: 'UNESCO Chair; Purdue University Named Professor; Chair, Communication Sciences and Disorders, PFW',
+    id: 'bischoff',
+    name: 'Dr. Shannon & Prof. Mary Encabo Bischoff',
+    title: 'UNESCO Chairs \u00b7 Purdue University Fort Wayne',
     talkTitle: '',
-    talkNote: 'A shared talk with Prof. Mary Encabo Bischoff',
-    bio: 'Dr. Shannon Bischoff is a UNESCO Chair, Purdue University Named Professor, and Chair of the Department of Communication Sciences and Disorders at PFW. He is also the President of the Endangered Language Fund and Assistant Editor of the Journal Indigenous Languages Rights and Realities. His research spans computational linguistics, linguistic anthropology, language rights, and human rights. He has secured over $2 million in funding, published widely with leading presses, and collaborates globally with Indigenous and non-dominant language communities, as well as with governments, the United Nations, and the United Nations Education, Science, and Culture Organization (UNESCO).',
+    bio: '',
     headshot: '/headshots/shannon-bischoff.jpg',
-    headshotPosition: '50% 8%',
-  },
-  {
-    id: 'mary-encabo-bischoff',
-    name: 'Prof. Mary Encabo Bischoff',
-    title: 'UNESCO Chair; Clinical Assistant Professor of Linguistics; Director, Teaching English as a New Language, PFW',
-    talkTitle: '',
-    talkNote: 'A shared talk with Dr. Shannon Bischoff',
-    bio: 'Prof. Mary Encabo Bischoff is a UNESCO Chair, Clinical Assistant Professor of Linguistics, and Director of the Teaching English as a New Language program at Purdue University Fort Wayne. At PFW, she not only teaches college students, but also works with local ELL teachers and international colleagues. She created and continues to direct the English Language Partners (ELP) Program, which has served over 2,000 individuals, including indigenous communities, from Myanmar, Thailand, Nepal, the Philippines, Ecuador, India, Japan, and members of our local immigrant and refugee communities. She previously served on the board of Fort Wayne Sister Cities, which led to exchanges and partnerships with universities and high schools in Myanmar and Japan. She has advised Ministers of Education and been invited to speak at the UNESCO headquarters in Paris, the United Nations in New York City, and at the 2024 UN Global Education Meeting.',
-    headshot: '/headshots/mary-encabo-bischoff.jpg',
-    headshotPosition: '50% 6%',
+    people: [
+      {
+        name: 'Dr. Shannon Bischoff',
+        title: 'UNESCO Chair; Purdue University Named Professor; Chair, Communication Sciences and Disorders, PFW',
+        bio: 'Dr. Shannon Bischoff is a UNESCO Chair, Purdue University Named Professor, and Chair of the Department of Communication Sciences and Disorders at PFW. He is also the President of the Endangered Language Fund and Assistant Editor of the Journal Indigenous Languages Rights and Realities. His research spans computational linguistics, linguistic anthropology, language rights, and human rights. He has secured over $2 million in funding, published widely with leading presses, and collaborates globally with Indigenous and non-dominant language communities, as well as with governments, the United Nations, and the United Nations Education, Science, and Culture Organization (UNESCO).',
+        headshot: '/headshots/shannon-bischoff.jpg',
+        headshotPosition: '50% 8%',
+      },
+      {
+        name: 'Prof. Mary Encabo Bischoff',
+        title: 'UNESCO Chair; Clinical Assistant Professor of Linguistics; Director, Teaching English as a New Language, PFW',
+        bio: 'Prof. Mary Encabo Bischoff is a UNESCO Chair, Clinical Assistant Professor of Linguistics, and Director of the Teaching English as a New Language program at Purdue University Fort Wayne. At PFW, she not only teaches college students, but also works with local ELL teachers and international colleagues. She created and continues to direct the English Language Partners (ELP) Program, which has served over 2,000 individuals, including indigenous communities, from Myanmar, Thailand, Nepal, the Philippines, Ecuador, India, Japan, and members of our local immigrant and refugee communities. She previously served on the board of Fort Wayne Sister Cities, which led to exchanges and partnerships with universities and high schools in Myanmar and Japan. She has advised Ministers of Education and been invited to speak at the UNESCO headquarters in Paris, the United Nations in New York City, and at the 2024 UN Global Education Meeting.',
+        headshot: '/headshots/mary-encabo-bischoff.jpg',
+        headshotPosition: '50% 6%',
+      },
+    ],
   },
   {
     id: 'joshua-seluzhitskiy',

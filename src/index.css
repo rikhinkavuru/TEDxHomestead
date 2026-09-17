@@ -464,6 +464,9 @@ h1, h2, h3, h4, h5, h6 { font-weight: 600; line-height: 1.2; color: var(--text-p
   /* headshots are portrait; keep faces in frame — crop from the bottom, not the top */
   object-position: 50% 12%;
 }
+.smspeaker-art--duo { display: flex; align-items: stretch; }
+.smspeaker-art--duo .duo-half { position: relative; flex: 1; overflow: hidden; }
+.smspeaker-art--duo .duo-half + .duo-half { border-left: 1px solid var(--border); }
 .smspeaker-art .tba {
   font-family: var(--font-sans); font-weight: 600; font-size: 0.78rem;
   letter-spacing: 0.02em; color: var(--red-deep);
@@ -482,6 +485,16 @@ h1, h2, h3, h4, h5, h6 { font-weight: 600; line-height: 1.2; color: var(--text-p
   color: var(--text-secondary); font-size: 0.88rem; line-height: 1.6;
   padding-top: 12px; margin-top: 12px; border-top: 1px dashed var(--border);
 }
+.smspeaker-body .bio-person + .bio-person {
+  border-top: 1px dashed var(--border); padding-top: 4px;
+}
+.smspeaker-body .bio-person-name {
+  font-family: var(--font-display); font-weight: 500; font-size: 1rem;
+  letter-spacing: -0.01em; margin-top: 14px;
+}
+.smspeaker-body .bio-person:first-child .bio-person-name { margin-top: 12px; }
+.smspeaker-body .bio-person-role { color: var(--text-tertiary); font-size: 0.78rem; line-height: 1.45; margin-top: 3px; }
+.smspeaker-body .bio-person .bio { border-top: none; padding-top: 8px; margin-top: 8px; }
 .smspeaker-body .bio-toggle {
   display: inline-flex; align-items: center; gap: 6px;
   margin-top: 12px; padding: 0;
