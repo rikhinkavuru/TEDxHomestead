@@ -95,5 +95,6 @@ export const SPEAKERS: Speaker[] = [
     talkTitle: '',
     bio: '',
     headshot: '/headshots/jake-dunn.jpg',
+    headshotPosition: '50% 50%',
   },
 ]

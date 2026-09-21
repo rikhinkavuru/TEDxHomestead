@@ -26,7 +26,7 @@ export const EVENT = {
     // The part of the name rendered in red (leave '' for none).
     accent: 'Lasting Change',
     blurb:
-      'The ideas that reshape a life rarely shout — they take root and hold. Our speakers explore what it takes to stand apart, protect what matters, build real trust, and turn conviction into impact that outlasts the moment. From differentiation and financial know-how to preserving endangered cultures and strengthening the bonds closest to home, these are ideas built to endure.',
+      'The ideas that reshape a life rarely shout — they take root and hold. Our speakers explore what it takes to stand apart, protect what matters, build real trust, and turn conviction into impact that outlasts the moment. From differentiation and science that leaves no one out to preserving endangered languages and strengthening the bonds closest to home, these are ideas built to endure.',
   },
   venue: {
     name: 'Allen County Public Library',
