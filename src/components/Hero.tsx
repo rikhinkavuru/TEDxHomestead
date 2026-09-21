@@ -4,11 +4,10 @@ import { ArrowButton, GhostButton } from './chrome'
 import { HeroBackground } from './HeroBackground'
 
 const rise = {
-  hidden: { opacity: 0, y: 18, filter: 'blur(8px)' },
+  hidden: { opacity: 0, y: 18 },
   show: (i: number) => ({
     opacity: 1,
     y: 0,
-    filter: 'blur(0px)',
     transition: { duration: 0.65, delay: 0.08 * i, ease: [0.22, 1, 0.36, 1] as const },
   }),
 }

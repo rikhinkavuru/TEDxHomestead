@@ -3,20 +3,9 @@
  * Update here and every section of the site stays in sync.
  */
 export const EVENT = {
-  name: 'TEDxHomesteadHighSchool',
-  shortName: 'TEDxHomestead',
-  // The headline message on the site. Edit freely.
-  tagline: 'Ideas worth spreading,\nfrom our own backyard.',
-  blurb:
-    'One evening. Seven speakers from our community. A hundred seats. TEDxHomestead brings the TED stage to Fort Wayne — real ideas, told live, worth carrying home.',
   date: 'Tuesday, October 27, 2026',
-  dateShort: 'tue, oct 27 2026',
   dateLine: 'Tue, Oct 27',
-  dateISO: '2026-10-27',
-  // Date free tickets opened — shown only in the hero announcement pill.
-  ticketsOpenLabel: 'Jul 30',
   time: '6:00 PM – 8:00 PM',
-  timeShort: '6pm — 8pm',
   doorsOpen: '5:30 PM',
   format: 'Curated short talks, performances, and conversations.',
   capacity: 100,
