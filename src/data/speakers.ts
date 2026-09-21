@@ -82,10 +82,11 @@ export const SPEAKERS: Speaker[] = [
   {
     id: 'barry-abejide',
     name: 'Barry Abejide',
-    title: '',
-    talkTitle: '',
-    bio: '',
+    title: 'Student Researcher & AI Developer, Noblesville High School',
+    talkTitle: 'Success Doesn’t Ask Questions',
+    bio: 'Mobareji “Barry” Abejide is a Nigerian-American student researcher and AI developer whose work explores cancer discovery, genetic inequities, and making artificial intelligence accessible across languages. His research has earned multiple scientific awards and peer-reviewed publications. A senior at Noblesville High School, Barry is driven by a central question: how can we ensure that our growing ability to solve problems translates into meaningful progress for humanity?',
     headshot: '/headshots/barry-abejide.jpg',
+    headshotPosition: '50% 50%',
   },
   {
     id: 'jake-dunn',
