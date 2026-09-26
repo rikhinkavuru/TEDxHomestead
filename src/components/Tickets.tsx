@@ -250,12 +250,8 @@ export function Tickets() {
       <div className="smtix">
         <Reveal>
           <h2 className="smhead smtix-title">
-            One hundred seats. <span className="g">Yours is free.</span>
+            Claim <span className="g">your spot.</span>
           </h2>
-          <p className="smtix-lead">
-            TEDx caps this event at {EVENT.capacity} attendees, so every seat is reserved by name.
-            One ticket per person — claim yours before they&apos;re gone.
-          </p>
         </Reveal>
 
         <Reveal delay={0.08}>
