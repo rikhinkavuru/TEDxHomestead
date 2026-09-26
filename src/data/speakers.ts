@@ -50,7 +50,7 @@ export const SPEAKERS: Speaker[] = [
     id: 'bischoff',
     name: 'Dr. Shannon & Prof. Mary Encabo Bischoff',
     title: 'UNESCO Chairs \u00b7 Purdue University Fort Wayne',
-    talkTitle: '',
+    talkTitle: 'Language Death and the Classroom',
     bio: '',
     headshot: '/headshots/shannon-bischoff.jpg',
     people: [
