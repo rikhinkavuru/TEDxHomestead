@@ -329,8 +329,7 @@ export function Tickets() {
                 </ArrowButton>
 
                 <p className="fine">
-                  One ticket per person. Your email holds your seat and receives event updates —
-                  nothing else.
+                  Your email holds your seat and receives event updates.
                 </p>
               </form>
             )}
