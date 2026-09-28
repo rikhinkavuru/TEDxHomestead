@@ -385,6 +385,7 @@ h1, h2, h3, h4, h5, h6 { font-weight: 600; line-height: 1.2; color: var(--text-p
 /* ---- Tickets — single centered card ---- */
 .smtix { max-width: 480px; margin: 0 auto; text-align: center; }
 .smtix-title { font-size: clamp(1.9rem, 3.6vw, 2.8rem); }
+.smtix-lead { margin: 14px auto 0; color: var(--text-secondary); line-height: 1.6; font-size: 1rem; max-width: 40ch; }
 .smtix-card {
   position: relative; overflow: hidden; margin-top: clamp(26px, 3.5vw, 40px);
   text-align: left; padding: clamp(26px, 3.4vw, 38px);

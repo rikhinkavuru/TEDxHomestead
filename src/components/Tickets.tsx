@@ -252,6 +252,9 @@ export function Tickets() {
           <h2 className="smhead smtix-title">
             Claim <span className="g">your spot.</span>
           </h2>
+          <p className="smtix-lead">
+            Coming with family or a group? Reserve a separate ticket for each person.
+          </p>
         </Reveal>
 
         <Reveal delay={0.08}>
