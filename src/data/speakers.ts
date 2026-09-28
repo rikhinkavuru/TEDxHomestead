@@ -91,9 +91,9 @@ export const SPEAKERS: Speaker[] = [
   {
     id: 'jake-dunn',
     name: 'Jake Dunn',
-    title: '',
-    talkTitle: '',
-    bio: '',
+    title: 'High School Business Teacher',
+    talkTitle: 'What I Wish I Knew Before Leaving High School The First Time',
+    bio: 'Jake Dunn is a high school business teacher in Indiana who spends his days helping students prepare for life beyond the classroom. Outside of teaching, he stays active through running, coaching, and playing ultimate frisbee, while also making time for his faith, relationships, and the people who matter most to him. At 26, Jake is still figuring out life himself, which is exactly why his perspective comes from experience rather than pretending to have all the answers. His talk, “What I Wish I Knew Before Leaving High School The First Time,” is about the lessons he’s learned, and the things he wishes he had understood sooner.',
     headshot: '/headshots/jake-dunn.jpg',
     headshotPosition: '50% 50%',
   },
