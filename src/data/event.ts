@@ -6,6 +6,8 @@ export const EVENT = {
   date: 'Tuesday, October 27, 2026',
   dateLine: 'Tue, Oct 27',
   time: '6:00 PM – 8:00 PM',
+  // Compact form for the ticket stub, where space is tight.
+  timeShort: '6–8 PM',
   doorsOpen: '5:30 PM',
   format: 'Curated short talks, performances, and conversations.',
   capacity: 100,

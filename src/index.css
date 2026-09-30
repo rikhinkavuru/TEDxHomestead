@@ -466,6 +466,11 @@ h1, h2, h3, h4, h5, h6 { font-weight: 600; line-height: 1.2; color: var(--text-p
 }
 .tkt-foot { display: flex; flex-direction: column; gap: 4px; font-family: var(--font-mono); font-size: 0.74rem; letter-spacing: 0.06em; color: rgba(255, 255, 255, 0.9); }
 .tkt-code { color: rgba(255, 255, 255, 0.75); }
+/* Smallest phones: let the ticket grow to fit instead of clipping the footer. */
+@media (max-width: 360px) {
+  .tkt { aspect-ratio: auto; }
+  .tkt-foot { font-size: 0.66rem; letter-spacing: 0.03em; }
+}
 .tkt-stub {
   position: relative; z-index: 1;
   border-left: 2px dashed rgba(255, 255, 255, 0.45);

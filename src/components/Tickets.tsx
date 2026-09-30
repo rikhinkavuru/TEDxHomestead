@@ -94,7 +94,7 @@ async function saveTicket(r: Reservation) {
   ctx.font = "500 22px 'DM Mono', ui-monospace, monospace"
   ctx.fillStyle = 'rgba(255,255,255,0.92)'
   ctx.fillText(EVENT.venue.name, pad, H - 118)
-  ctx.fillText(`${EVENT.dateLine}, 2026 · ${EVENT.time}`, pad, H - 86)
+  ctx.fillText(`${EVENT.dateLine}, 2026 · ${EVENT.timeShort}`, pad, H - 86)
   ctx.fillStyle = 'rgba(255,255,255,0.75)'
   ctx.fillText(r.code, pad, H - 54)
 
@@ -179,7 +179,7 @@ function TicketOverlay({ reservation, onClose }: { reservation: Reservation; onC
           <div className="tkt-name">{reservation.name}</div>
           <div className="tkt-foot">
             <span>{EVENT.venue.name}</span>
-            <span>{EVENT.dateLine}, 2026 · {EVENT.time}</span>
+            <span>{EVENT.dateLine}, 2026 · {EVENT.timeShort}</span>
             <span className="tkt-code">{reservation.code}</span>
           </div>
         </div>
