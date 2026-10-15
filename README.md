@@ -18,7 +18,7 @@ npm run dev
 
 ## Tickets
 
-- **Form** — `src/components/Tickets.tsx`. Collects name, email, and phone. There is no per-device lock, so one person can book for their whole family or group from the same phone.
+- **Form** — `src/components/Tickets.tsx`. Collects name, email, and phone. "Add another person" adds another set of fields, up to 6 people per submission. Each person is reserved separately, gets their own database row, and gets their own confirmation email.
 - **Server** — `api/reserve.ts` (a Vercel Function) calls the Supabase `reserve_ticket()` function, then emails a confirmation through Resend. A failed email never loses the seat.
 - **Database** — `supabase/schema.sql` for a fresh project. Existing projects apply the files in `supabase/migrations/` in date order through the Supabase SQL editor. Limits: 100 seats, one ticket per name per email, up to 6 tickets per email.
 - **Env vars (Vercel)** — `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`, `RESEND_API_KEY` (from the Resend integration), and optionally `RESEND_FROM` once a sending domain is verified in Resend, e.g. `TEDxHomestead <tickets@tedxhomestead.com>`.

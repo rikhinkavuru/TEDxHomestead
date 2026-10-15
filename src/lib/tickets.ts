@@ -56,12 +56,12 @@ try {
   /* storage unavailable */
 }
 
-function isValidEmail(email: string): boolean {
+export function isValidEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim())
 }
 
 /** Lenient: any formatting, but 7–15 digits (ITU E.164 max) once stripped. */
-function isValidPhone(phone: string): boolean {
+export function isValidPhone(phone: string): boolean {
   const digits = phone.replace(/\D/g, '')
   return digits.length >= 7 && digits.length <= 15
 }
