@@ -8,7 +8,7 @@ import { supabase } from './supabase'
  * functions (run under SECURITY DEFINER, so the anon key never touches the
  * table directly) do the work atomically:
  *   - seats_remaining() -> int
- *   - reserve_ticket(p_name, p_email) -> json  (advisory-locked count + insert)
+ *   - reserve_ticket(p_name, p_email, p_phone) -> json  (advisory-locked count + insert)
  * The SQL to create them is in supabase/schema.sql — run it once in the
  * Supabase SQL editor.
  *
@@ -21,6 +21,7 @@ export interface Reservation {
   code: string
   name: string
   email: string
+  phone: string
   reservedAt: string
 }
 
@@ -63,6 +64,12 @@ function isValidEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim())
 }
 
+/** Lenient: any formatting, but 7–15 digits (ITU E.164 max) once stripped. */
+function isValidPhone(phone: string): boolean {
+  const digits = phone.replace(/\D/g, '')
+  return digits.length >= 7 && digits.length <= 15
+}
+
 export async function getRemaining(): Promise<number> {
   if (!supabase) return EVENT.capacity
   try {
@@ -78,8 +85,14 @@ export async function getMyReservation(): Promise<Reservation | null> {
   return readMine()
 }
 
-export async function reserveTicket(name: string, email: string): Promise<ReserveResult> {
-  if (!name.trim() || !isValidEmail(email)) return { ok: false, reason: 'invalid' }
+export async function reserveTicket(
+  name: string,
+  email: string,
+  phone: string,
+): Promise<ReserveResult> {
+  if (!name.trim() || !isValidEmail(email) || !isValidPhone(phone)) {
+    return { ok: false, reason: 'invalid' }
+  }
 
   // one ticket per device
   if (readMine()) return { ok: false, reason: 'already_reserved' }
@@ -90,6 +103,7 @@ export async function reserveTicket(name: string, email: string): Promise<Reserv
       code: 'TXH-LOCAL',
       name: name.trim(),
       email: email.trim(),
+      phone: phone.trim(),
       reservedAt: new Date().toISOString(),
     }
     writeMine(reservation)
@@ -102,6 +116,7 @@ export async function reserveTicket(name: string, email: string): Promise<Reserv
     const r = await supabase.rpc('reserve_ticket', {
       p_name: name.trim(),
       p_email: email.trim(),
+      p_phone: phone.trim(),
     })
     data = r.data
     error = r.error
@@ -121,6 +136,7 @@ export async function reserveTicket(name: string, email: string): Promise<Reserv
     code: res.code ?? 'TXH-000000',
     name: res.name ?? name.trim(),
     email: email.trim(),
+    phone: phone.trim(),
     reservedAt: res.reserved_at ?? new Date().toISOString(),
   }
   writeMine(reservation)

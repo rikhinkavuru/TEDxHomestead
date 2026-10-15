@@ -8,7 +8,7 @@ const ERROR_MESSAGES: Record<string, string> = {
   sold_out: 'All 100 seats are reserved. Email us for the waitlist.',
   duplicate_email: 'A ticket is already held under this email.',
   already_reserved: 'This device already holds a ticket.',
-  invalid: 'Enter your name and a valid email.',
+  invalid: 'Enter your name, a valid email, and a phone number.',
   error: 'Something went wrong reserving your seat. Please try again.',
 }
 
@@ -210,6 +210,7 @@ export function Tickets() {
   const [mine, setMine] = useState<Reservation | null>(null)
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
+  const [phone, setPhone] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
   const [showTicket, setShowTicket] = useState(false)
@@ -234,7 +235,7 @@ export function Tickets() {
     setError(null)
     if (honeypotRef.current?.value || Date.now() - mountedAt.current < 1500) return
     setSubmitting(true)
-    const result = await reserveTicket(name, email)
+    const result = await reserveTicket(name, email, phone)
     setSubmitting(false)
     if (result.ok) {
       setMine(result.reservation)
@@ -304,6 +305,18 @@ export function Tickets() {
                   placeholder="you@example.com"
                 />
 
+                <label htmlFor="ticket-phone">Phone</label>
+                <input
+                  id="ticket-phone"
+                  type="tel"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  required
+                  autoComplete="tel"
+                  inputMode="tel"
+                  placeholder="(408) 555-0123"
+                />
+
                 <input
                   ref={honeypotRef}
                   type="text"
@@ -334,7 +347,8 @@ export function Tickets() {
                 </ArrowButton>
 
                 <p className="fine">
-                  Your email holds your seat and receives event updates.
+                  Your email holds your seat and receives event updates. We&apos;ll only use your
+                  phone number for day-of logistics.
                 </p>
               </form>
             )}

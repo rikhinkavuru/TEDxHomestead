@@ -12,6 +12,7 @@ create table if not exists public.tickets (
   name             text not null,
   email            text not null,
   email_normalized text not null unique,
+  phone            text not null,
   reserved_at      timestamptz not null default now()
 );
 
@@ -31,7 +32,7 @@ as $$
 $$;
 
 -- 3. Reserve a ticket (atomic) -------------------------------------------
-create or replace function public.reserve_ticket(p_name text, p_email text)
+create or replace function public.reserve_ticket(p_name text, p_email text, p_phone text)
 returns json
 language plpgsql
 security definer
@@ -45,11 +46,14 @@ declare
   v_count    int;
   v_code     text;
   v_alphabet text := 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; -- no 0/O/1/I
+  v_digits   text;
   i          int;
 begin
-  -- basic validation
+  -- basic validation (phone: any formatting, but 7–15 digits once stripped)
+  v_digits := regexp_replace(coalesce(p_phone, ''), '\D', '', 'g');
   if coalesce(trim(p_name), '') = ''
-     or p_email !~ '^[^@\s]+@[^@\s]+\.[^@\s]{2,}$' then
+     or p_email !~ '^[^@\s]+@[^@\s]+\.[^@\s]{2,}$'
+     or length(v_digits) < 7 or length(v_digits) > 15 then
     return json_build_object('ok', false, 'reason', 'invalid');
   end if;
 
@@ -82,8 +86,8 @@ begin
     v_code := v_code || substr(v_alphabet, 1 + floor(random() * length(v_alphabet))::int, 1);
   end loop;
 
-  insert into public.tickets (code, name, email, email_normalized)
-  values (v_code, trim(p_name), trim(p_email), v_norm);
+  insert into public.tickets (code, name, email, email_normalized, phone)
+  values (v_code, trim(p_name), trim(p_email), v_norm, trim(p_phone));
 
   return json_build_object(
     'ok', true,
@@ -97,8 +101,11 @@ $$;
 
 -- 4. Grants ---------------------------------------------------------------
 revoke all on function public.seats_remaining()          from public;
-revoke all on function public.reserve_ticket(text, text) from public;
-grant execute on function public.seats_remaining()          to anon, authenticated;
-grant execute on function public.reserve_ticket(text, text) to anon, authenticated;
+revoke all on function public.reserve_ticket(text, text, text) from public;
+grant execute on function public.seats_remaining()                to anon, authenticated;
+grant execute on function public.reserve_ticket(text, text, text) to anon, authenticated;
 
 -- Done. To see reservations later:  select * from public.tickets order by reserved_at;
+--
+-- Already ran an older version of this file? Don't re-run it — apply the
+-- migration in supabase/migrations/ instead (each one is idempotent).
