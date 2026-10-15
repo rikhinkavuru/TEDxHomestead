@@ -18,6 +18,8 @@ npm run dev
 
 ## Tickets
 
-The "smart ticket" flow lives in `src/lib/tickets.ts`. The current shell enforces one ticket per device and per normalized email (gmail dot/plus-alias tricks are collapsed), with a honeypot + time-to-fill bot check in the form.
-
-**Important:** real capacity enforcement across all visitors needs a small backend — a browser can't see other people's reservations. Every ticket function is async and isolated in `tickets.ts` with `TODO(backend)` markers, so wiring up Supabase/Firebase/a serverless function later means changing only that file.
+- **Form** — `src/components/Tickets.tsx`. Collects name, email, and phone. There is no per-device lock, so one person can book for their whole family or group from the same phone.
+- **Server** — `api/reserve.ts` (a Vercel Function) calls the Supabase `reserve_ticket()` function, then emails a confirmation through Resend. A failed email never loses the seat.
+- **Database** — `supabase/schema.sql` for a fresh project. Existing projects apply the files in `supabase/migrations/` in date order through the Supabase SQL editor. Limits: 100 seats, one ticket per name per email, up to 6 tickets per email.
+- **Env vars (Vercel)** — `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`, `RESEND_API_KEY` (from the Resend integration), and optionally `RESEND_FROM` once a sending domain is verified in Resend, e.g. `TEDxHomestead <tickets@tedxhomestead.com>`.
+- **Local dev** — `npm run dev` has no `/api`, so it reserves straight through Supabase and skips email.

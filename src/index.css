@@ -422,6 +422,7 @@ h1, h2, h3, h4, h5, h6 { font-weight: 600; line-height: 1.2; color: var(--text-p
 .smtix-done h3 { font-family: var(--font-display); font-weight: 500; font-size: 1.5rem; letter-spacing: -0.02em; }
 .smtix-done p { margin-top: 10px; color: var(--text-secondary); line-height: 1.6; }
 .smtix-done .smbtn { margin-top: 22px; }
+.smtix-done .smbtn + .smbtn { margin-top: 10px; }
 
 /* ---- Ticket reveal overlay ---- */
 .tkt-modal {

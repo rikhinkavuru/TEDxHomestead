@@ -2,14 +2,21 @@ import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Section, Reveal, ArrowButton } from './chrome'
 import { EVENT } from '../data/event'
-import { getMyReservation, getRemaining, reserveTicket, type Reservation } from '../lib/tickets'
+import { getRemaining, reserveTicket, type Reservation } from '../lib/tickets'
 
 const ERROR_MESSAGES: Record<string, string> = {
   sold_out: 'All 100 seats are reserved. Email us for the waitlist.',
+  duplicate_name: 'This person already has a ticket under this email.',
+  // Returned by the database before the group-tickets migration runs.
   duplicate_email: 'A ticket is already held under this email.',
-  already_reserved: 'This device already holds a ticket.',
-  invalid: 'Enter your name, a valid email, and a phone number.',
+  email_limit: 'This email already holds 6 tickets. Use a different email for the rest of your group.',
+  invalid: 'Enter a name, a valid email, and a phone number.',
   error: 'Something went wrong reserving your seat. Please try again.',
+}
+
+interface Booked {
+  reservation: Reservation
+  emailSent: boolean
 }
 
 /** Draw the ticket to a canvas and download it as a PNG keepsake. */
@@ -143,7 +150,15 @@ async function saveTicket(r: Reservation) {
 }
 
 /** Full-screen ticket reveal — dims the page, floats a keepsake ticket. */
-function TicketOverlay({ reservation, onClose }: { reservation: Reservation; onClose: () => void }) {
+function TicketOverlay({
+  reservation,
+  emailSent,
+  onClose,
+}: {
+  reservation: Reservation
+  emailSent: boolean
+  onClose: () => void
+}) {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose()
@@ -198,8 +213,9 @@ function TicketOverlay({ reservation, onClose }: { reservation: Reservation; onC
       </button>
 
       <p className="tkt-note">
-        This ticket is just for fun! We&apos;ll email you with updates, and hope to see you at the
-        event!
+        {emailSent
+          ? `A confirmation is on its way to ${reservation.email}. See you at the event!`
+          : 'Save this ticket or note your code. We hope to see you at the event!'}
       </p>
     </motion.div>
   )
@@ -207,7 +223,7 @@ function TicketOverlay({ reservation, onClose }: { reservation: Reservation; onC
 
 export function Tickets() {
   const [remaining, setRemaining] = useState<number | null>(null)
-  const [mine, setMine] = useState<Reservation | null>(null)
+  const [booked, setBooked] = useState<Booked | null>(null)
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [phone, setPhone] = useState('')
@@ -219,7 +235,6 @@ export function Tickets() {
 
   useEffect(() => {
     getRemaining().then(setRemaining)
-    getMyReservation().then(setMine)
   }, [])
 
   // lock body scroll while the ticket overlay is open
@@ -238,15 +253,22 @@ export function Tickets() {
     const result = await reserveTicket(name, email, phone)
     setSubmitting(false)
     if (result.ok) {
-      setMine(result.reservation)
+      setBooked({ reservation: result.reservation, emailSent: result.emailSent })
       setRemaining(result.remaining)
       setShowTicket(true)
     } else {
-      setError(ERROR_MESSAGES[result.reason])
+      setError(ERROR_MESSAGES[result.reason] ?? ERROR_MESSAGES.error)
     }
   }
 
-  const soldOut = remaining !== null && remaining <= 0 && !mine
+  /** Back to the form for the next person. Email and phone usually stay the same. */
+  function reserveAnother() {
+    setBooked(null)
+    setName('')
+    setError(null)
+  }
+
+  const soldOut = remaining !== null && remaining <= 0 && !booked
 
   return (
     <Section id="tickets">
@@ -256,20 +278,31 @@ export function Tickets() {
             Claim <span className="g">your spot.</span>
           </h2>
           <p className="smtix-lead">
-            Coming with family or a group? Reserve a separate ticket for each person.
+            Coming with family or a group? Reserve a separate ticket for each person. You can use
+            the same email and phone for everyone.
           </p>
         </Reveal>
 
         <Reveal delay={0.08}>
           <div className="smtix-card">
-            {mine ? (
+            {booked ? (
               <div className="smtix-done">
                 <div className="smtix-done-badge">You&apos;re in ✓</div>
-                <h3>Seat reserved for {mine.name.split(' ')[0]}.</h3>
-                <p>Your ticket code is <b>{mine.code}</b>. We&apos;ll email event updates.</p>
+                <h3>Seat reserved for {booked.reservation.name.split(' ')[0]}.</h3>
+                <p>
+                  Ticket code <b>{booked.reservation.code}</b>.{' '}
+                  {booked.emailSent
+                    ? `A confirmation is on its way to ${booked.reservation.email}.`
+                    : 'Save your ticket so you have the code handy.'}
+                </p>
                 <button className="smbtn primary" onClick={() => setShowTicket(true)}>
-                  View your ticket
+                  View ticket
                 </button>
+                {remaining !== 0 && (
+                  <button className="smbtn ghost" onClick={reserveAnother}>
+                    Reserve for another person
+                  </button>
+                )}
               </div>
             ) : soldOut ? (
               <div className="smtix-done">
@@ -347,8 +380,8 @@ export function Tickets() {
                 </ArrowButton>
 
                 <p className="fine">
-                  Your email holds your seat and receives event updates. We&apos;ll only use your
-                  phone number for day-of logistics.
+                  We&apos;ll email a confirmation and event updates. Your phone number is only for
+                  day-of logistics.
                 </p>
               </form>
             )}
@@ -357,8 +390,12 @@ export function Tickets() {
       </div>
 
       <AnimatePresence>
-        {showTicket && mine && (
-          <TicketOverlay reservation={mine} onClose={() => setShowTicket(false)} />
+        {showTicket && booked && (
+          <TicketOverlay
+            reservation={booked.reservation}
+            emailSent={booked.emailSent}
+            onClose={() => setShowTicket(false)}
+          />
         )}
       </AnimatePresence>
     </Section>

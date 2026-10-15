@@ -1,7 +1,8 @@
 -- TEDxHomestead ticketing schema.
 -- Run this ONCE in the Supabase SQL editor (Dashboard → SQL → New query → Run).
 -- It creates the tickets table and two SECURITY DEFINER functions that enforce
--- the 100-seat cap atomically. The anon/publishable key never touches the table
+-- the 100-seat cap atomically.
+-- Each email can hold up to 6 tickets (one per name) so families can share one. The anon/publishable key never touches the table
 -- directly (RLS is on with no policies), so attendee emails stay private and the
 -- seat count can't be tampered with from the browser.
 
@@ -11,10 +12,16 @@ create table if not exists public.tickets (
   code             text not null unique,
   name             text not null,
   email            text not null,
-  email_normalized text not null unique,
+  email_normalized text not null,
   phone            text not null,
   reserved_at      timestamptz not null default now()
 );
+
+-- One ticket per person per email; a family can share one email.
+create unique index if not exists tickets_email_name_key
+  on public.tickets (email_normalized, lower(name));
+create index if not exists tickets_email_normalized_idx
+  on public.tickets (email_normalized);
 
 alter table public.tickets enable row level security;
 -- No policies => the anon role cannot select/insert/update/delete directly.
@@ -39,19 +46,25 @@ security definer
 set search_path = public
 as $$
 declare
-  v_capacity int := 100;
-  v_local    text;
-  v_domain   text;
-  v_norm     text;
-  v_count    int;
-  v_code     text;
-  v_alphabet text := 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; -- no 0/O/1/I
-  v_digits   text;
-  i          int;
+  v_capacity   int := 100;
+  v_per_email  int := 6;
+  v_name       text;
+  v_local      text;
+  v_domain     text;
+  v_norm       text;
+  v_count      int;
+  v_code       text;
+  v_alphabet   text := 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; -- no 0/O/1/I
+  v_digits     text;
+  i            int;
 begin
+  -- collapse runs of whitespace so "Jane  Doe" and "Jane Doe" match
+  v_name := regexp_replace(trim(coalesce(p_name, '')), '\s+', ' ', 'g');
+
   -- basic validation (phone: any formatting, but 7–15 digits once stripped)
   v_digits := regexp_replace(coalesce(p_phone, ''), '\D', '', 'g');
-  if coalesce(trim(p_name), '') = ''
+  if v_name = ''
+     or length(v_name) > 120
      or p_email !~ '^[^@\s]+@[^@\s]+\.[^@\s]{2,}$'
      or length(v_digits) < 7 or length(v_digits) > 15 then
     return json_build_object('ok', false, 'reason', 'invalid');
@@ -68,11 +81,18 @@ begin
   end if;
   v_norm := v_local || '@' || v_domain;
 
-  -- serialize reservations so the count check + insert are atomic
+  -- serialize reservations so the count checks + insert are atomic
   perform pg_advisory_xact_lock(hashtext('tedx_homestead_tickets'));
 
-  if exists (select 1 from public.tickets where email_normalized = v_norm) then
-    return json_build_object('ok', false, 'reason', 'duplicate_email');
+  if exists (
+    select 1 from public.tickets
+    where email_normalized = v_norm and lower(name) = lower(v_name)
+  ) then
+    return json_build_object('ok', false, 'reason', 'duplicate_name');
+  end if;
+
+  if (select count(*) from public.tickets where email_normalized = v_norm) >= v_per_email then
+    return json_build_object('ok', false, 'reason', 'email_limit');
   end if;
 
   select count(*)::int into v_count from public.tickets;
@@ -87,12 +107,12 @@ begin
   end loop;
 
   insert into public.tickets (code, name, email, email_normalized, phone)
-  values (v_code, trim(p_name), trim(p_email), v_norm, trim(p_phone));
+  values (v_code, v_name, trim(p_email), v_norm, trim(p_phone));
 
   return json_build_object(
     'ok', true,
     'code', v_code,
-    'name', trim(p_name),
+    'name', v_name,
     'reserved_at', now(),
     'remaining', v_capacity - (v_count + 1)
   );
