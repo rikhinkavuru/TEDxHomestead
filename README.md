@@ -1,6 +1,8 @@
-# TEDxHomesteadHighSchool
+# TEDxHomestead
 
-Website for the TEDx event at Homestead High School, Fort Wayne, IN — Friday, October 2, 2026, 5–8 PM. Free admission, capped at 100 attendees per TEDx rules.
+Website for TEDxHomestead, an independently organized TEDx event in Fort Wayne, IN — Tuesday, October 27, 2026, 6–8 PM, at the Allen County Public Library Main Branch. Free admission, capped at 100 attendees per TEDx rules.
+
+This independent TEDx event is operated under license from TED. It is not sponsored by, endorsed by, or affiliated with Homestead High School or Southwest Allen County Schools.
 
 Built with React, TypeScript, Vite, Tailwind CSS, and Framer Motion.
 

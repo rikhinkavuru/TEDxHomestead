@@ -13,9 +13,11 @@ export function Footer({ onNavigate }: { onNavigate: (id: string) => void }) {
       <div className="smfooter-inner">
         <div>
           <h4>Ideas worth spreading, from our own backyard.</h4>
-          <p className="tag">
-            This independent TEDx event is operated under license from TED.
-            Organized and run by students at Homestead High School.
+          <p className="tag">Organized by independent student volunteers.</p>
+          <p className="smfooter-legal">
+            This independent TEDx event is operated under license from TED. It is not sponsored
+            by, endorsed by, or affiliated with Homestead High School or Southwest Allen County
+            Schools.
           </p>
         </div>
         <div className="smfooter-col">

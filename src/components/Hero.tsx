@@ -12,7 +12,7 @@ const rise = {
   }),
 }
 
-const WORDS = ['community', 'school', 'friends', 'city', 'class']
+const WORDS = ['community', 'friends', 'city', 'family', 'neighbors']
 
 /** Seamless vertical word carousel for the subheader. */
 function RotatingWord() {
@@ -47,7 +47,7 @@ export function Hero({ onNavigate }: { onNavigate: (id: string) => void }) {
       <HeroBackground />
 
       <motion.h1 variants={rise} custom={0} initial="hidden" animate="show">
-        TED<span className="enddot">x</span>Homestead<wbr />HighSchool
+        TED<span className="enddot">x</span>Homestead
       </motion.h1>
 
       <motion.p className="smhero-tagline" variants={rise} custom={1} initial="hidden" animate="show">
