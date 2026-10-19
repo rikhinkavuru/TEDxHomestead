@@ -47,7 +47,7 @@ export function Hero({ onNavigate }: { onNavigate: (id: string) => void }) {
       <HeroBackground />
 
       <motion.h1 variants={rise} custom={0} initial="hidden" animate="show">
-        TED<span className="enddot">x</span>Homestead
+        TED<span className="enddot">x</span>Homestead<wbr />HighSchool
       </motion.h1>
 
       <motion.p className="smhero-tagline" variants={rise} custom={1} initial="hidden" animate="show">
